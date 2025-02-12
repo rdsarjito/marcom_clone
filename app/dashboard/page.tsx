@@ -1,7 +1,10 @@
 import "../globals.css";
 
+import FilterComponent from "./componentes/filter";
+
 import { Card, CardContent } from "@/components/ui/card";
 import { Box } from "lucide-react";
+import MaterialTable from "./componentes/materi-komunikasi";
 
 const stats = [
   {
@@ -30,23 +33,28 @@ const stats = [
   },
 ];
 
-export default function DashboardStatistics() {
+export default function Page() {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-      {stats.map((stat, index) => (
-        <Card key={index} className="p-0 pt-3 shadow-sm border rounded-lg">
-          <CardContent className="flex flex-col space-y-6">
-            <div className="flex justify-between items-center">
-              <span className="text-sm truncate font-semibold">{stat.title}</span>
-              {stat.icon}
-            </div>
-            <div className="flex justify-between items-center">
-              <span className="text-2xl font-bold">{stat.value}</span>
-              <span className="text-sm text-gray-400">{stat.change}</span>
-            </div>
-          </CardContent>
-        </Card>
-      ))}
-    </div>
+    <main>
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 p-4">
+        {stats.map((stat, index) => (
+          <Card key={index} className="p-0 pt-3 shadow-sm border rounded-lg">
+            <CardContent className="flex flex-col space-y-6">
+              <div className="flex justify-between items-center">
+                <span className="text-sm truncate font-semibold">{stat.title}</span>
+                {stat.icon}
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="text-2xl font-bold">{stat.value}</span>
+                <span className="text-sm text-gray-400">{stat.change}</span>
+              </div>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+      <FilterComponent />
+      <MaterialTable />
+    </main>
+
   );
 }

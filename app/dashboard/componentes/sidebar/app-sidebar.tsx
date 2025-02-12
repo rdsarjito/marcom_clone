@@ -9,7 +9,8 @@ import {
   Bell
 } from "lucide-react"
 
-import { NavMain } from "@/app/dashboard/componentes/nav-main"
+import SidebarNavigation from "@/app/dashboard/componentes/sidebar/sidebar-navigation"
+
 import {
   Sidebar,
   SidebarContent,
@@ -63,7 +64,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         </SidebarMenuButton>
       </SidebarHeader>
       <SidebarContent>
-        <NavMain items={data.navMain} />
+        <SidebarNavigation items={data.navMain} />
       </SidebarContent>
       <SidebarRail />
     </Sidebar>

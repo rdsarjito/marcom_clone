@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 
-import { AppSidebar } from "@/app/dashboard/componentes/app-sidebar"
+import { AppSidebar } from "@/app/dashboard/componentes/sidebar/app-sidebar"
 
 import {
   UserCircle,
@@ -27,7 +27,7 @@ export default function Layout({ children }: LayoutProps) {
             <UserCircle className="size-6" />
           </div>
         </header>
-        <div className="p-4">{children}</div>
+        <div>{children}</div>
       </SidebarInset>
     </SidebarProvider>
   )
