@@ -1,10 +1,10 @@
 "use client"
 
-import { ChevronRight, type LucideIcon } from "lucide-react"
+import { type LucideIcon } from "lucide-react"
+import { useState } from "react" 
 
 import {
   Collapsible,
-  CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible"
 import {
@@ -28,6 +28,12 @@ export function NavMain({
     }[]
   }[]
 }) {
+  const [activeItem, setActiveItem] = useState<string | null>(null) 
+
+  const handleItemClick = (title: string) => {
+    setActiveItem(title) 
+  }
+
   return (
     <SidebarGroup>
       <SidebarMenu>
@@ -40,10 +46,13 @@ export function NavMain({
           >
             <SidebarMenuItem>
               <CollapsibleTrigger asChild>
-                <SidebarMenuButton tooltip={item.title}>
+                <SidebarMenuButton
+                  tooltip={item.title}
+                  className={activeItem === item.title ? 'bg-gray-100' : ''}  
+                  onClick={() => handleItemClick(item.title)} 
+                >
                   {item.icon && <item.icon />}
                   <span>{item.title}</span>
-                  <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
                 </SidebarMenuButton>
               </CollapsibleTrigger>
             </SidebarMenuItem>

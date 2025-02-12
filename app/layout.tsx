@@ -2,40 +2,10 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
-import { Card, CardContent } from "@/components/ui/card";
-import { DollarSign, Users, CreditCard, Activity } from "lucide-react";
-
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
 });
-
-const stats = [
-  {
-    title: "Total Revenue",
-    value: "$45,231.89",
-    change: "+20.1% from last month",
-    icon: <DollarSign className="w-5 h-5 text-gray-500" />,
-  },
-  {
-    title: "Subscriptions",
-    value: "+2,350",
-    change: "+180.1% from last month",
-    icon: <Users className="w-5 h-5 text-gray-500" />,
-  },
-  {
-    title: "Sales",
-    value: "+12,234",
-    change: "+19% from last month",
-    icon: <CreditCard className="w-5 h-5 text-gray-500" />,
-  },
-  {
-    title: "Active Now",
-    value: "+573",
-    change: "+201 since last hour",
-    icon: <Activity className="w-5 h-5 text-gray-500" />,
-  },
-];
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
