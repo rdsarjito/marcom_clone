@@ -6,12 +6,14 @@ type Filters = {
   fitur?: string;
   status?: string;
   tipe?: string;
+  startDate?: string;
+  endDate?: string;
 };
 
 type FilterStore = {
   filters: Filters;
   tempFilters: Filters;
-  searchQuery: string; 
+  searchQuery: string;
   setTempFilter: (key: keyof Filters, value: string) => void;
   applyFilters: () => void;
   resetFilters: () => void;
@@ -21,12 +23,12 @@ type FilterStore = {
 const useFilterStore = create<FilterStore>((set) => ({
   filters: {},
   tempFilters: {},
-  searchQuery: "", 
+  searchQuery: "",
   setTempFilter: (key, value) =>
     set((state) => ({ tempFilters: { ...state.tempFilters, [key]: value } })),
   applyFilters: () => set((state) => ({ filters: state.tempFilters })),
   resetFilters: () =>
-    set({ filters: {}, tempFilters: {}, searchQuery: "" }), 
+    set({ filters: {}, tempFilters: {}, searchQuery: "" }),
   setSearchQuery: (query) => set({ searchQuery: query }),
 }));
 

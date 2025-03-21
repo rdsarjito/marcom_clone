@@ -13,29 +13,31 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import useFilterStore from "../store/filterStore";
 
-interface FilterDateProps {
-  label?: string;
-  value?: DateRange;
-  onChange?: (range: DateRange | undefined) => void;
-}
+const FilterDate: React.FC = () => {
+  const { tempFilters, setTempFilter, applyFilters } = useFilterStore();
 
-const FilterDate: React.FC<FilterDateProps> = ({ label = "Pilih rentang tanggal", value, onChange }) => {
   const today = new Date();
   const startOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
 
-  const [dateRange, setDateRange] = React.useState<DateRange | undefined>(
-    value ?? { from: startOfMonth, to: today }
-  );
+  const [dateRange, setDateRange] = React.useState<DateRange | undefined>({
+    from: tempFilters.startDate ? new Date(tempFilters.startDate) : startOfMonth,
+    to: tempFilters.endDate ? new Date(tempFilters.endDate) : today,
+  });
 
   const handleSelect = (range: DateRange | undefined) => {
     setDateRange(range);
-    onChange?.(range);
+
+    if (range?.from) setTempFilter("startDate", range.from.toISOString());
+    if (range?.to) setTempFilter("endDate", range.to.toISOString());
+
+    applyFilters();
   };
 
   return (
     <div className="flex items-center space-x-2">
-      <span className="text-sm text-gray-700">{label}</span>
+      <span className="text-sm text-gray-700">Pilih rentang tanggal</span>
       <Popover>
         <PopoverTrigger asChild>
           <Button

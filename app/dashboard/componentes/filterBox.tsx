@@ -5,7 +5,7 @@ import { Select, SelectTrigger, SelectContent, SelectItem, SelectValue } from "@
 interface FilterBoxProps {
   filterOptions: Record<string, readonly string[]>;
   onChange: (key: string, value: string) => void;
-  selectedValues: Record<string, string>; // Tambahkan prop ini
+  selectedValues: Record<string, string>; 
 }
 
 export default function FilterBox({ filterOptions, onChange, selectedValues }: FilterBoxProps) {

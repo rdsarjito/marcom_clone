@@ -91,13 +91,21 @@ export default function CommunicationTable() {
   const { filters, searchQuery } = useFilterStore();
 
   const filteredData = data.filter((item) => {
-    const matchesFilters = Object.entries(filters).every(
-      ([key, value]) => !value || item[key as keyof typeof item] === value
-    );
-
-    const matchesSearch = item.materi.toLowerCase().includes(searchQuery.toLowerCase());
-
-    return matchesFilters && matchesSearch;
+    const { startDate, endDate } = filters;
+  
+    if (!startDate || !endDate) return true;
+  
+    const [itemStart, itemEnd] = item.periode.split(" - ");
+    const itemStartDate = new Date(itemStart);
+    const itemEndDate = new Date(itemEnd);
+  
+    const filterStartDate = new Date(startDate);
+    const filterEndDate = new Date(endDate);
+  
+    const isInRange =
+      itemStartDate <= filterEndDate && itemEndDate >= filterStartDate;
+  
+    return isInRange;
   });
 
   const startIndex = (currentPage - 1) * itemsPerPage;

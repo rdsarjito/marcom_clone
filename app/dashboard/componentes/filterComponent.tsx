@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import useFilterStore from "../store/filterStore";
-import { PlusCircle, Search } from "lucide-react";
+import { PlusCircle } from "lucide-react";
 import FilterBox from "./filterBox";
 import HorizontalLine from "./horizontalLine";
 import SearchInput from "./searchInput";
