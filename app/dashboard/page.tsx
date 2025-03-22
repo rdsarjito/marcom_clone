@@ -1,10 +1,11 @@
 import "../globals.css";
 import { Box } from "lucide-react";
 
-import FilterComponent from "./componentes/filterComponent";
-import FilterDate from "./componentes/filterDate";
-import MateriKomunikasiTable from "./componentes/materiKomunikasiTable";
+import FilterSection from "./components/filters/filterSection";
+import FilterDate from "./components/filters/filterDate";
 import { Card, CardContent } from "@/components/ui/card";
+import CommunicationTable from "./components/table/communicationTable";
+import FormBaru from "./components/formBaru";
 
 /**
  * Data statistik dashboard.
@@ -29,7 +30,7 @@ export default function Page() {
     <main className="min-h-screen">
       {/* Filter tanggal */}
       <section className="p-4">
-        <FilterDate label="Pilih rentang transaksi" />
+        <FilterDate />
       </section>
 
       {/* Kartu statistik */}
@@ -54,8 +55,9 @@ export default function Page() {
 
       {/* Filter tambahan dan tabel data */}
       <section>
-        <FilterComponent />
-        <MateriKomunikasiTable />
+        <FilterSection />
+        <CommunicationTable />
+        <FormBaru />
       </section>
     </main>
   );

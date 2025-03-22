@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
 import { UserCircle } from "lucide-react";
 
-import { AppSidebar } from "@/app/dashboard/componentes/sidebar/app-sidebar";
+import { AppSidebar } from "@/app/dashboard/components/sidebar/app-sidebar";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 
 interface LayoutProps {
