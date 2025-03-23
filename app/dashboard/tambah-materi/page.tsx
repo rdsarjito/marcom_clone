@@ -25,6 +25,8 @@ import { Dialog, DialogContent, DialogFooter, DialogTitle } from "@/components/u
 import SelectField from "../uiRama/selectField";
 import ConfirmDialog from "../uiRama/confirmDialog";
 import ButtonWithIcon from "../uiRama/buttonWithIcon";
+import InputField from "../uiRama/inputField";
+import { KeywordsInput } from "./component/keywordInput";
 
 const formSchema = z.object({
   brand: z.string().min(1, "Brand harus dipilih"),
@@ -151,11 +153,7 @@ export default function DocumentForm() {
             />
 
             {/* Nama Materi */}
-            <div className="space-y-2">
-              <Label>Nama Materi</Label>
-              <Input placeholder="Masukkan nama materi" {...register("namaMateri")} />
-              {errors.namaMateri && <p className="text-red-500">{errors.namaMateri.message}</p>}
-            </div>
+            <InputField name="namaMateri" label="Nama Materi" placeholder="Masukkan nama materi" />
 
             {/* Jenis */}
             <SelectField 
@@ -240,16 +238,12 @@ export default function DocumentForm() {
 
             {/* Input Link */}
             <div className="space-y-2">
-              <Label>Input Link Dokumen Materi</Label>
-              <Input
-                type="text"
+              <InputField
+                name="linkDokumen"
+                label="Input Link Dokumen Materi"
                 placeholder="Masukkan link dokumen"
-                {...register("linkDokumen")}
-                onChange={(e) => setField("linkDokumen", e.target.value)}
+                type="url"
               />
-              {errors.linkDokumen && (
-                <p className="text-red-500 text-sm">{errors.linkDokumen.message}</p>
-              )}
             </div>
 
             {/* Select Tipe Materi */}
@@ -300,36 +294,7 @@ export default function DocumentForm() {
             </div>
 
             {/* Input Keywords */}
-            <div className="space-y-4">
-              {keywords.map((keyword, index) => (
-                <div key={index} className="space-y-2">
-                  <Label>Input Keyword {index + 1}</Label>
-                  <Input
-                    type="text"
-                    placeholder="Masukkan keyword"
-                    {...register(`keywords.${index}`)}
-                    onChange={(e) => {
-                      const newKeywords = [...keywords];
-                      newKeywords[index] = e.target.value;
-                      setField("keywords", newKeywords);
-                    }}
-                  />
-                  {errors.keywords?.[index] && (
-                    <p className="text-red-500 text-sm">
-                      {errors.keywords[index]?.message}
-                    </p>
-                  )}
-                </div>
-              ))}
-            </div>
-
-            {/* Button Tambah Keyword */}
-            <ButtonWithIcon
-              icon={Plus}
-              label="Tambah Keyword"
-              onClick={addKeyword}
-              className="border border-gray-300 text-gray-700 hover:bg-gray-100"
-            />
+            <KeywordsInput />
 
             <HorizontalLine />
 
