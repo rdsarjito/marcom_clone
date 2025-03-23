@@ -12,10 +12,10 @@ import useFilterStore from "../../store/useFilterStore";
 import { filterOptions } from "../../data/filterOptions";
 
 // ✅ 4. Relative imports (same folder `./`)
-import FilterBox from "./filterBox";
 import HorizontalLine from "../uiRama/horizontalLine";
 import SearchInput from "../uiRama/searchInput";
 import ButtonWithIcon from "../uiRama/buttonWithIcon";
+import SelectField from "../uiRama/selectField";
 
 export default function FilterSection() {
   const { setTempFilter, applyFilters, resetFilters, setSearchQuery } = useFilterStore();
@@ -34,7 +34,7 @@ export default function FilterSection() {
 
   return (
     <div className="p-4 bg-gray-50">
-      <FilterBox
+      <SelectField
         filterOptions={filterOptions}
         onChange={handleFilterChange}
         selectedValues={selectedFilters} 
