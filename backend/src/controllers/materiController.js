@@ -14,26 +14,24 @@ export const getAllMateri = async (req, res) => {
 export const addMateri = async (req, res) => {
   try {
     console.log("Request body:", req.body);
-    
+    console.log("Uploaded file:", req.file);
+
+    // Validasi tanggal mulai dan tanggal berakhir
     if (new Date(req.body.startDate) > new Date(req.body.endDate)) {
       return res.status(400).json({ message: "Tanggal mulai tidak boleh lebih besar dari tanggal berakhir" });
     }
 
-    const newMateri = new Materi(req.body);
+    // Menyusun data materi baru
+    const newMateri = new Materi({
+      ...req.body, // Menyertakan linkDokumen, tipeMateri, dan keywords
+      thumbnail: req.file ? req.file.path : null, // Menyimpan path file thumbnail jika ada
+    });
+
+    // Menyimpan materi baru ke database
     await newMateri.save();
     res.status(201).json(newMateri);
   } catch (error) {
     console.error("Error saat menambahkan materi:", error);
     res.status(500).json({ message: "Gagal menambahkan materi", error: error.message });
-  }
-};
-
-// Delete materi
-export const deleteMateri = async (req, res) => {
-  try {
-    await Materi.findByIdAndDelete(req.params.id);
-    res.json({ message: "Materi deleted" });
-  } catch (err) {
-    res.status(500).json({ message: "Error deleting data" });
   }
 };

@@ -1,14 +1,18 @@
 import mongoose from "mongoose";
 
 const MateriSchema = new mongoose.Schema({
-  brand: { type: String, required: true },
-  cluster: { type: String, required: true },
-  fitur: { type: String, required: true },
-  namaMateri: { type: String, required: true },
-  jenis: { type: String, required: true },
-  startDate: { type: Date, required: true },
-  endDate: { type: Date, required: true },
-  periode: { type: String, required: true },
+  brand: { type: String, required: false },
+  cluster: { type: String, required: false },
+  fitur: { type: String, required: false },
+  namaMateri: { type: String, required: false },
+  jenis: { type: String, required: false },
+  startDate: { type: Date, required: false },
+  endDate: { type: Date, required: false },
+  periode: { type: String, required: false },
+  thumbnail: { type: String, required: false }, // File path thumbnail
+  linkDokumen: { type: String, required: false }, // Link dokumen
+  tipeMateri: { type: String, required: false }, // Tipe materi (misalnya pdf)
+  keywords: { type: [String], required: false } // Array of keywords
 }, { timestamps: true });
 
 export default mongoose.model("Materies", MateriSchema);

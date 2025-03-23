@@ -1,8 +1,10 @@
 import { ReactNode } from "react";
 import { UserCircle } from "lucide-react";
 
+
 import { AppSidebar } from "@/app/dashboard/components/sidebar/app-sidebar";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
+import { Toaster } from "@/components/ui/toaster"
 
 interface LayoutProps {
   readonly children: ReactNode;
@@ -33,6 +35,7 @@ export default function Layout({ children }: LayoutProps) {
 
         {/* Konten utama */}
         <main>{children}</main>
+        <Toaster />
       </SidebarInset>
     </SidebarProvider>
   );

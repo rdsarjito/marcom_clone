@@ -1,10 +1,10 @@
-import express from "express";
-import { getAllMateri, addMateri, deleteMateri } from "../controllers/materiController.js";
+import express from 'express';
+import { getAllMateri, addMateri } from '../controllers/materiController.js';
 
 const router = express.Router();
 
+// POST route untuk menambah materi
 router.get("/", getAllMateri);
-router.post("/", addMateri);
-router.delete("/:id", deleteMateri);
+router.post('/', addMateri);
 
 export default router;

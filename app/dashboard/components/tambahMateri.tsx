@@ -202,7 +202,7 @@ export default function TambahMateriForm() {
           {/* Tombol Submit */}
           {loading && <p className="text-blue-500">Mengirim data...</p>}
           {error && <p className="text-red-500">{error}</p>}
-          <Button className="w-full mt-4" onClick={handleSubmit(onSubmit)}>
+          <Button className="mt-4" onClick={handleSubmit(onSubmit)}>
             Submit
           </Button>
         </CardContent>
