@@ -33,12 +33,19 @@ export default function FilterSection() {
   };
 
   return (
-    <div className="p-4 bg-gray-50">
-      <SelectField
-        filterOptions={filterOptions}
-        onChange={handleFilterChange}
-        selectedValues={selectedFilters} 
-      />
+    <div className="p-4 bg-gray-50 space-y-4">
+      {/* Langsung memasukkan dropdown filter tanpa FilterBox */}
+      <div className="grid grid-cols-5 gap-2">
+        {Object.entries(filterOptions).map(([key, options]) => (
+          <SelectField
+            key={key}
+            label={key}
+            value={selectedFilters[key] || ""}
+            onChange={(value) => handleFilterChange(key, value)}
+            options={options.map((opt) => ({ value: opt, label: opt }))}
+          />
+        ))}
+      </div>
 
       <HorizontalLine />
 

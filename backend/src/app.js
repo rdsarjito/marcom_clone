@@ -3,8 +3,6 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
 import multer from 'multer'; // Import multer
-import path from 'path';
-
 import materiRoutes from './routes/materiRoutes.js';
 
 dotenv.config();

@@ -1,6 +1,6 @@
 "use client";
 
-import { useForm } from "react-hook-form";
+import { useForm, FormProvider } from "react-hook-form";
 import { useState } from "react";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -20,6 +20,7 @@ import { useToast } from "@/hooks/use-toast"
 import { DayPicker } from "react-day-picker";
 import "react-day-picker/dist/style.css";
 import { Dialog, DialogContent, DialogFooter, DialogTitle } from "@/components/ui/dialog";
+import SelectField from "./uiRama/selectField";
 
 const formSchema = z.object({
   brand: z.string().min(1, "Brand harus dipilih"),
@@ -46,16 +47,12 @@ export default function DocumentForm() {
   const { startDate, endDate,cluster, fitur, namaMateri, jenis, periode, linkDokumen, tipeMateri, keywords, setField, addKeyword } =
     useFormStore();
 
-  const {
-    register,
-    handleSubmit,
-    setValue,
-    reset,
-    formState: { errors },
-  } = useForm<FormDataType>({
+  const methods = useForm<FormDataType>({
     resolver: zodResolver(formSchema),
     defaultValues: { startDate, endDate, linkDokumen, tipeMateri, keywords, thumbnail: undefined },
   });
+  
+  const { register, handleSubmit, setValue, reset, formState: { errors } } = methods;
 
   const [isLoading, setIsLoading] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -135,279 +132,256 @@ export default function DocumentForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit((data) => { setFormData(data); setIsDialogOpen(true); })} className="max-w-2xl mx-auto p-6">
-      <Card className="mb-2">
-        <CardContent className="p-6 space-y-6">
-          <h3 className="text-lg font-semibold">Informasi Umum</h3>
+    <FormProvider {...methods}>
+      <form onSubmit={methods.handleSubmit((data) => { setFormData(data); setIsDialogOpen(true); })} className="max-w-2xl mx-auto p-6">
+        <Card className="mb-2">
+          <CardContent className="p-6 space-y-6">
+            <h3 className="text-lg font-semibold">Informasi Umum</h3>
 
-          {/* Brand */}
-          <div className="space-y-2">
-            <Label>Brand</Label>
-            <Select onValueChange={(value) => setValue("brand", value, { shouldValidate: true })}>
-              <SelectTrigger>
-                <SelectValue placeholder="Pilih Brand" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="brand1">Brand 1</SelectItem>
-                <SelectItem value="brand2">Brand 2</SelectItem>
-              </SelectContent>
-            </Select>
-            {errors.brand && <p className="text-red-500">{errors.brand.message}</p>}
-          </div>
-
-          {/* Cluster */}
-          <div className="space-y-2">
-            <Label>Cluster</Label>
-            <Select onValueChange={(value) => setValue("cluster", value, { shouldValidate: true })}>
-              <SelectTrigger>
-                <SelectValue placeholder="Pilih Cluster" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="cluster1">Cluster 1</SelectItem>
-                <SelectItem value="cluster2">Cluster 2</SelectItem>
-              </SelectContent>
-            </Select>
-            {errors.cluster && <p className="text-red-500">{errors.cluster.message}</p>}
-          </div>
-
-          {/* Fitur */}
-          <div className="space-y-2">
-            <Label>Fitur</Label>
-            <Select onValueChange={(value) => setValue("fitur", value, { shouldValidate: true })}>
-              <SelectTrigger>
-                <SelectValue placeholder="Pilih Fitur" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="fitur1">Fitur 1</SelectItem>
-                <SelectItem value="fitur2">Fitur 2</SelectItem>
-              </SelectContent>
-            </Select>
-            {errors.fitur && <p className="text-red-500">{errors.fitur.message}</p>}
-          </div>
-
-          {/* Nama Materi */}
-          <div className="space-y-2">
-            <Label>Nama Materi</Label>
-            <Input placeholder="Masukkan nama materi" {...register("namaMateri")} />
-            {errors.namaMateri && <p className="text-red-500">{errors.namaMateri.message}</p>}
-          </div>
-
-          {/* Jenis */}
-          <div className="space-y-2">
-            <Label>Jenis</Label>
-            <Select onValueChange={(value) => setValue("jenis", value, { shouldValidate: true })}>
-              <SelectTrigger>
-                <SelectValue placeholder="Pilih jenis materi" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="jenis1">Jenis 1</SelectItem>
-                <SelectItem value="jenis2">Jenis 2</SelectItem>
-              </SelectContent>
-            </Select>
-            {errors.jenis && <p className="text-red-500">{errors.jenis.message}</p>}
-          </div>
-
-          {/* Pilih Tanggal Mulai */}
-          <div className="space-y-2">
-            <Label>Pilih Tanggal Mulai</Label>
-            <Popover>
-              <PopoverTrigger asChild>
-                <Button variant="outline" className="w-full flex justify-between">
-                  {startDate ? format(startDate, "dd/MM/yyyy") : "Pilih tanggal"}
-                  <CalendarIcon className="ml-2 h-4 w-4" />
-                </Button>
-              </PopoverTrigger>
-              <PopoverContent align="start">
-              <DayPicker
-                mode="single"
-                selected={startDate}
-                onSelect={(date) => {
-                  if (date) {
-                    console.log("Tanggal mulai dipilih:", date);
-                    setField("startDate", date); // Simpan di Zustand
-                    setValue("startDate", date, { shouldValidate: true }); // Simpan di react-hook-form
-                  }
-                }}
-              />
-
-              </PopoverContent>
-            </Popover>
-            {errors.startDate && <p className="text-red-500">{errors.startDate.message}</p>}
-          </div>
-
-          {/* Pilih Tanggal Berakhir */}
-          <div className="space-y-2">
-            <Label>Pilih Tanggal Berakhir</Label>
-            <Popover>
-              <PopoverTrigger asChild>
-                <Button variant="outline" className="w-full flex justify-between">
-                  {endDate ? format(endDate, "dd/MM/yyyy") : "Pilih tanggal"}
-                  <CalendarIcon className="ml-2 h-4 w-4" />
-                </Button>
-              </PopoverTrigger>
-              <PopoverContent align="start">
-              <DayPicker
-                mode="single"
-                selected={endDate}
-                onSelect={(date) => {
-                  if (date) {
-                    console.log("Tanggal berakhir dipilih:", date);
-                    setField("endDate", date);
-                    setValue("endDate", date, { shouldValidate: true });
-                  }
-                }}
-              />
-              </PopoverContent>
-            </Popover>
-            {errors.endDate && <p className="text-red-500">{errors.endDate.message}</p>}
-          </div>
-
-          {/* Periode */}
-          <div className="space-y-2">
-            <Label>Periode</Label>
-            <Select onValueChange={(value) => setValue("periode", value, { shouldValidate: true })}>
-              <SelectTrigger>
-                <SelectValue placeholder="Pilih Periode" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="periode1">Periode 1</SelectItem>
-                <SelectItem value="periode2">Periode 2</SelectItem>
-              </SelectContent>
-            </Select>
-            {errors.periode && <p className="text-red-500">{errors.periode.message}</p>}
-          </div>
-        </CardContent>
-      </Card>
-      
-      <Card>
-        <CardContent className="p-6 space-y-6">
-          <h3 className="text-lg font-semibold">Dokumen Materi</h3>
-
-          {/* Input Link */}
-          <div className="space-y-2">
-            <Label>Input Link Dokumen Materi</Label>
-            <Input
-              type="text"
-              placeholder="Masukkan link dokumen"
-              {...register("linkDokumen")}
-              onChange={(e) => setField("linkDokumen", e.target.value)}
+            {/* Brand */}
+            <SelectField 
+              name="brand" 
+              label="Brand" 
+              options={[
+                { value: "brimo", label: "BRImo" }
+              ]} 
             />
-            {errors.linkDokumen && (
-              <p className="text-red-500 text-sm">{errors.linkDokumen.message}</p>
-            )}
-          </div>
 
-          {/* Select Tipe Materi */}
-          <div className="space-y-2">
-            <Label>Tipe Materi</Label>
-            <Select
-              onValueChange={(value) => {
-                setField("tipeMateri", value);
-                setValue("tipeMateri", value as "pdf" | "video" | "dokumen");
-              }}
-              defaultValue={tipeMateri}
-            >
-              <SelectTrigger>
-                <SelectValue placeholder="Pilih tipe materi" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="pdf">PDF</SelectItem>
-                <SelectItem value="video">Video</SelectItem>
-                <SelectItem value="dokumen">Dokumen</SelectItem>
-              </SelectContent>
-            </Select>
-            {errors.tipeMateri && (
-              <p className="text-red-500 text-sm">{errors.tipeMateri.message}</p>
-            )}
-          </div>
+            {/* Cluster */}
+            <SelectField 
+              name="cluster" 
+              label="Cluster" 
+              options={[
+                { value: "cluster1", label: "Cluster 1" },
+                { value: "cluster2", label: "Cluster 2" }
+              ]} 
+            />
 
-          {/* Upload Thumbnail */}
-          <div className="space-y-2">
-            <Label>Upload Thumbnail</Label>
-            <div className="flex items-center gap-4">
-              <label className="cursor-pointer">
-                <input
-                  type="file"
-                  accept="image/*"
-                  className="hidden"
-                  onChange={handleThumbnailChange}
-                />
-                <Card className="w-16 h-16 flex items-center justify-center border rounded-lg cursor-pointer hover:bg-gray-100">
-                  {preview ? (
-                    <img src={preview} alt="Preview" className="w-full h-full object-cover rounded-lg" />
-                  ) : (
-                    <Upload className="w-5 h-5 text-gray-500" />
-                  )}
-                </Card>
-              </label>
-              {thumbnail && <p className="text-sm">{thumbnail.name}</p>}
+
+            {/* Fitur */}
+            <SelectField 
+              name="fitur" 
+              label="Fitur" 
+              options={[
+                { value: "fitur1", label: "Fitur 1" },
+                { value: "fitur2", label: "Fitur 2" }
+              ]} 
+            />
+
+            {/* Nama Materi */}
+            <div className="space-y-2">
+              <Label>Nama Materi</Label>
+              <Input placeholder="Masukkan nama materi" {...register("namaMateri")} />
+              {errors.namaMateri && <p className="text-red-500">{errors.namaMateri.message}</p>}
             </div>
-          </div>
 
-          {/* Input Keywords */}
-          <div className="space-y-4">
-            {keywords.map((keyword, index) => (
-              <div key={index} className="space-y-2">
-                <Label>Input Keyword {index + 1}</Label>
-                <Input
-                  type="text"
-                  placeholder="Masukkan keyword"
-                  {...register(`keywords.${index}`)}
-                  onChange={(e) => {
-                    const newKeywords = [...keywords];
-                    newKeywords[index] = e.target.value;
-                    setField("keywords", newKeywords);
+            {/* Jenis */}
+            <SelectField 
+              name="jenis" 
+              label="Jenis" 
+              options={[
+                { value: "jenis1", label: "Jenis 1" },
+                { value: "jenis2", label: "Jenis 2" }
+              ]} 
+            />
+
+            {/* Pilih Tanggal Mulai */}
+            <div className="space-y-2">
+              <Label>Pilih Tanggal Mulai</Label>
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button variant="outline" className="w-full flex justify-between">
+                    {startDate ? format(startDate, "dd/MM/yyyy") : "Pilih tanggal"}
+                    <CalendarIcon className="ml-2 h-4 w-4" />
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent align="start">
+                <DayPicker
+                  mode="single"
+                  selected={startDate}
+                  onSelect={(date) => {
+                    if (date) {
+                      console.log("Tanggal mulai dipilih:", date);
+                      setField("startDate", date); // Simpan di Zustand
+                      setValue("startDate", date, { shouldValidate: true }); // Simpan di react-hook-form
+                    }
                   }}
                 />
-                {errors.keywords?.[index] && (
-                  <p className="text-red-500 text-sm">
-                    {errors.keywords[index]?.message}
-                  </p>
-                )}
+
+                </PopoverContent>
+              </Popover>
+              {errors.startDate && <p className="text-red-500">{errors.startDate.message}</p>}
+            </div>
+
+            {/* Pilih Tanggal Berakhir */}
+            <div className="space-y-2">
+              <Label>Pilih Tanggal Berakhir</Label>
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button variant="outline" className="w-full flex justify-between">
+                    {endDate ? format(endDate, "dd/MM/yyyy") : "Pilih tanggal"}
+                    <CalendarIcon className="ml-2 h-4 w-4" />
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent align="start">
+                <DayPicker
+                  mode="single"
+                  selected={endDate}
+                  onSelect={(date) => {
+                    if (date) {
+                      console.log("Tanggal berakhir dipilih:", date);
+                      setField("endDate", date);
+                      setValue("endDate", date, { shouldValidate: true });
+                    }
+                  }}
+                />
+                </PopoverContent>
+              </Popover>
+              {errors.endDate && <p className="text-red-500">{errors.endDate.message}</p>}
+            </div>
+
+            {/* Periode */}
+            <SelectField 
+              name="periode" 
+              label="Periode" 
+              options={[
+                { value: "periode1", label: "Periode 1" },
+                { value: "periode2", label: "Periode 2" }
+              ]} 
+            />
+          </CardContent>
+        </Card>
+        
+        <Card>
+          <CardContent className="p-6 space-y-6">
+            <h3 className="text-lg font-semibold">Dokumen Materi</h3>
+
+            {/* Input Link */}
+            <div className="space-y-2">
+              <Label>Input Link Dokumen Materi</Label>
+              <Input
+                type="text"
+                placeholder="Masukkan link dokumen"
+                {...register("linkDokumen")}
+                onChange={(e) => setField("linkDokumen", e.target.value)}
+              />
+              {errors.linkDokumen && (
+                <p className="text-red-500 text-sm">{errors.linkDokumen.message}</p>
+              )}
+            </div>
+
+            {/* Select Tipe Materi */}
+            <div className="space-y-2">
+              <Label>Tipe Materi</Label>
+              <Select
+                onValueChange={(value) => {
+                  setField("tipeMateri", value);
+                  setValue("tipeMateri", value as "pdf" | "video" | "dokumen");
+                }}
+                defaultValue={tipeMateri}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Pilih tipe materi" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="pdf">PDF</SelectItem>
+                  <SelectItem value="video">Video</SelectItem>
+                  <SelectItem value="dokumen">Dokumen</SelectItem>
+                </SelectContent>
+              </Select>
+              {errors.tipeMateri && (
+                <p className="text-red-500 text-sm">{errors.tipeMateri.message}</p>
+              )}
+            </div>
+
+            {/* Upload Thumbnail */}
+            <div className="space-y-2">
+              <Label>Upload Thumbnail</Label>
+              <div className="flex items-center gap-4">
+                <label className="cursor-pointer">
+                  <input
+                    type="file"
+                    accept="image/*"
+                    className="hidden"
+                    onChange={handleThumbnailChange}
+                  />
+                  <Card className="w-16 h-16 flex items-center justify-center border rounded-lg cursor-pointer hover:bg-gray-100">
+                    {preview ? (
+                      <img src={preview} alt="Preview" className="w-full h-full object-cover rounded-lg" />
+                    ) : (
+                      <Upload className="w-5 h-5 text-gray-500" />
+                    )}
+                  </Card>
+                </label>
+                {thumbnail && <p className="text-sm">{thumbnail.name}</p>}
               </div>
-            ))}
-          </div>
+            </div>
 
-          {/* Button Tambah Keyword */}
-          <Button
-            variant="outline"
-            className="flex items-center gap-2"
-            onClick={addKeyword}
-            type="button"
-          >
-            <Plus className="w-4 h-4" />
-            Tambah Keyword
-          </Button>
+            {/* Input Keywords */}
+            <div className="space-y-4">
+              {keywords.map((keyword, index) => (
+                <div key={index} className="space-y-2">
+                  <Label>Input Keyword {index + 1}</Label>
+                  <Input
+                    type="text"
+                    placeholder="Masukkan keyword"
+                    {...register(`keywords.${index}`)}
+                    onChange={(e) => {
+                      const newKeywords = [...keywords];
+                      newKeywords[index] = e.target.value;
+                      setField("keywords", newKeywords);
+                    }}
+                  />
+                  {errors.keywords?.[index] && (
+                    <p className="text-red-500 text-sm">
+                      {errors.keywords[index]?.message}
+                    </p>
+                  )}
+                </div>
+              ))}
+            </div>
 
-          <HorizontalLine />
-
-          {/* Button Tambah Dokumen */}
-          <Button
-            className="bg-black text-white py-2 flex items-center justify-center gap-2"
-            type="submit"
-            disabled={isLoading}
-          >
-            {isLoading ? (
-              <Loader2 className="w-4 h-4 animate-spin" />
-            ) : (
+            {/* Button Tambah Keyword */}
+            <Button
+              variant="outline"
+              className="flex items-center gap-2"
+              onClick={addKeyword}
+              type="button"
+            >
               <Plus className="w-4 h-4" />
-            )}
-            {isLoading ? "Mengirim..." : "Tambah Dokumen"}
-          </Button>
-        </CardContent>
-      </Card>
-      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogContent>
-          <DialogTitle>Konfirmasi Simpan</DialogTitle>
-          <p>Apakah Anda yakin ingin menyimpan dokumen ini?</p>
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setIsDialogOpen(false)}>Batal</Button>
-            <Button onClick={handleSubmit(onSubmit)} disabled={isLoading}>
-              Ya, Simpan
+              Tambah Keyword
             </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
-    </form>
+
+            <HorizontalLine />
+
+            {/* Button Tambah Dokumen */}
+            <Button
+              className="bg-black text-white py-2 flex items-center justify-center gap-2"
+              type="submit"
+              disabled={isLoading}
+            >
+              {isLoading ? (
+                <Loader2 className="w-4 h-4 animate-spin" />
+              ) : (
+                <Plus className="w-4 h-4" />
+              )}
+              {isLoading ? "Mengirim..." : "Tambah Dokumen"}
+            </Button>
+          </CardContent>
+        </Card>
+        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+          <DialogContent>
+            <DialogTitle>Konfirmasi Simpan</DialogTitle>
+            <p>Apakah Anda yakin ingin menyimpan dokumen ini?</p>
+            <DialogFooter>
+              <Button variant="outline" onClick={() => setIsDialogOpen(false)}>Batal</Button>
+              <Button onClick={handleSubmit(onSubmit)} disabled={isLoading}>
+                Ya, Simpan
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+      </form>
+    </FormProvider>
   );
 }
