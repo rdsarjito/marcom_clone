@@ -5,7 +5,6 @@ import FilterSection from "./components/filters/filterSection";
 import FilterDate from "./components/filters/filterDate";
 import { Card, CardContent } from "@/components/ui/card";
 import CommunicationTable from "./components/table/communicationTable";
-import FormBaru from "./components/formBaru";
 
 /**
  * Data statistik dashboard.

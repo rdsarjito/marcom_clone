@@ -9,7 +9,7 @@ import {
   Bell
 } from "lucide-react"
 
-import SidebarNavigation from "@/app/dashboard/components/sidebar/sidebar-navigation"
+import SidebarNavigation from "@/app/dashboard/uiRama/sidebar/sidebar-navigation"
 
 import {
   Sidebar,

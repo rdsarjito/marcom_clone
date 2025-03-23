@@ -8,7 +8,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { format } from "date-fns";
 import { CalendarIcon, Upload, Plus, Loader2, ImageIcon, CheckCircle, XCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent } from "@/components/ui/card";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
@@ -18,10 +17,8 @@ import HorizontalLine from "../uiRama/horizontalLine";
 import useFormStore from "../store/useFormStore";
 import { useToast } from "@/hooks/use-toast"
 
-
 import { DayPicker } from "react-day-picker";
 import "react-day-picker/dist/style.css";
-import { Dialog, DialogContent, DialogFooter, DialogTitle } from "@/components/ui/dialog";
 import SelectField from "../uiRama/selectField";
 import ConfirmDialog from "../uiRama/confirmDialog";
 import ButtonWithIcon from "../uiRama/buttonWithIcon";
@@ -60,7 +57,7 @@ export default function DocumentForm() {
     defaultValues: { startDate, endDate, linkDokumen, tipeMateri, keywords, thumbnail: undefined },
   });
   
-  const { register, handleSubmit, setValue, reset, formState: { errors } } = methods;
+  const { handleSubmit, setValue, reset, formState: { errors } } = methods;
 
   const [isLoading, setIsLoading] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -182,8 +179,8 @@ export default function DocumentForm() {
                   onSelect={(date) => {
                     if (date) {
                       console.log("Tanggal mulai dipilih:", date);
-                      setField("startDate", date); // Simpan di Zustand
-                      setValue("startDate", date, { shouldValidate: true }); // Simpan di react-hook-form
+                      setField("startDate", date); 
+                      setValue("startDate", date, { shouldValidate: true });
                     }
                   }}
                 />
@@ -247,28 +244,15 @@ export default function DocumentForm() {
             </div>
 
             {/* Select Tipe Materi */}
-            <div className="space-y-2">
-              <Label>Tipe Materi</Label>
-              <Select
-                onValueChange={(value) => {
-                  setField("tipeMateri", value);
-                  setValue("tipeMateri", value as "pdf" | "video" | "dokumen");
-                }}
-                defaultValue={tipeMateri}
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder="Pilih tipe materi" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="pdf">PDF</SelectItem>
-                  <SelectItem value="video">Video</SelectItem>
-                  <SelectItem value="dokumen">Dokumen</SelectItem>
-                </SelectContent>
-              </Select>
-              {errors.tipeMateri && (
-                <p className="text-red-500 text-sm">{errors.tipeMateri.message}</p>
-              )}
-            </div>
+            <SelectField 
+              name="tipeMateri" 
+              label="Tipe Materi" 
+              options={[
+                { value: "pdf", label: "PDF" },
+                { value: "video", label: "Video" },
+                { value: "dokumen", label: "Dokumen" }
+              ]} 
+            />
 
             {/* Upload Thumbnail */}
             <div className="space-y-2">
