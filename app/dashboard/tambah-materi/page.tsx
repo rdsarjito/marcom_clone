@@ -2,6 +2,7 @@
 
 import { useForm, FormProvider } from "react-hook-form";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { format } from "date-fns";
@@ -12,7 +13,8 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent } from "@/components/ui/card";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import HorizontalLine from "./uiRama/horizontalLine";
+
+import HorizontalLine from "../components/uiRama/horizontalLine";
 import useFormStore from "../store/useFormStore";
 import { useToast } from "@/hooks/use-toast"
 
@@ -20,7 +22,7 @@ import { useToast } from "@/hooks/use-toast"
 import { DayPicker } from "react-day-picker";
 import "react-day-picker/dist/style.css";
 import { Dialog, DialogContent, DialogFooter, DialogTitle } from "@/components/ui/dialog";
-import SelectField from "./uiRama/selectField";
+import SelectField from "../components/uiRama/selectField";
 
 const formSchema = z.object({
   brand: z.string().min(1, "Brand harus dipilih"),
@@ -42,9 +44,11 @@ const formSchema = z.object({
 type FormDataType = z.infer<typeof formSchema>;
 
 export default function DocumentForm() {
+  const router = useRouter();
+
   const { toast } = useToast()
 
-  const { startDate, endDate,cluster, fitur, namaMateri, jenis, periode, linkDokumen, tipeMateri, keywords, setField, addKeyword } =
+  const { startDate, endDate, cluster, fitur, namaMateri, jenis, periode, linkDokumen, tipeMateri, keywords, setField, addKeyword } =
     useFormStore();
 
   const methods = useForm<FormDataType>({
@@ -114,6 +118,8 @@ export default function DocumentForm() {
       setThumbnail(null);
       setPreview(null);
       reset(); 
+
+      router.push("/dashboard");
     } catch (error) {
       console.error("Error:", error);
       toast({
@@ -156,7 +162,6 @@ export default function DocumentForm() {
                 { value: "cluster2", label: "Cluster 2" }
               ]} 
             />
-
 
             {/* Fitur */}
             <SelectField 

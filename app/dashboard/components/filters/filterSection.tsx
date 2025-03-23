@@ -3,6 +3,7 @@
 // ✅ 1. Third-party libraries
 import { useState } from "react";
 import { PlusCircle } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 // ✅ 2. Absolute imports (alias path)
 import { Button } from "@/components/ui/button";
@@ -19,7 +20,8 @@ import SelectField from "../uiRama/selectField";
 
 export default function FilterSection() {
   const { setTempFilter, applyFilters, resetFilters, setSearchQuery } = useFilterStore();
-  
+  const router = useRouter();
+
   const [selectedFilters, setSelectedFilters] = useState<Record<string, string>>({});
 
   const handleFilterChange = (key: string, value: string) => {
@@ -30,6 +32,10 @@ export default function FilterSection() {
   const handleResetFilters = () => {
     resetFilters();
     setSelectedFilters({}); 
+  };
+
+  const handleTambahMateri = () => {
+    router.push("/dashboard/tambah-materi"); // Navigasi ke halaman tambah materi
   };
 
   return (
@@ -59,6 +65,7 @@ export default function FilterSection() {
             icon={PlusCircle}
             label="Tambah Materi Komunikasi"
             className="bg-black text-white hover:bg-gray-800"
+            onClick={handleTambahMateri}
           />
         </div>
         <div className="flex space-x-2">
