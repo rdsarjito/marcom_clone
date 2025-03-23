@@ -13,10 +13,10 @@ import useFilterStore from "../../store/useFilterStore";
 import { filterOptions } from "../../data/filterOptions";
 
 // ✅ 4. Relative imports (same folder `./`)
-import HorizontalLine from "../uiRama/horizontalLine";
-import SearchInput from "../uiRama/searchInput";
-import ButtonWithIcon from "../uiRama/buttonWithIcon";
-import SelectField from "../uiRama/selectField";
+import HorizontalLine from "../../uiRama/horizontalLine";
+import SearchInput from "../../uiRama/searchInput";
+import ButtonWithIcon from "../../uiRama/buttonWithIcon";
+import SelectField from "../../uiRama/selectField";
 
 export default function FilterSection() {
   const { setTempFilter, applyFilters, resetFilters, setSearchQuery } = useFilterStore();

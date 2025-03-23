@@ -14,7 +14,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
-import HorizontalLine from "../components/uiRama/horizontalLine";
+import HorizontalLine from "../uiRama/horizontalLine";
 import useFormStore from "../store/useFormStore";
 import { useToast } from "@/hooks/use-toast"
 
@@ -22,7 +22,9 @@ import { useToast } from "@/hooks/use-toast"
 import { DayPicker } from "react-day-picker";
 import "react-day-picker/dist/style.css";
 import { Dialog, DialogContent, DialogFooter, DialogTitle } from "@/components/ui/dialog";
-import SelectField from "../components/uiRama/selectField";
+import SelectField from "../uiRama/selectField";
+import ConfirmDialog from "../uiRama/confirmDialog";
+import ButtonWithIcon from "../uiRama/buttonWithIcon";
 
 const formSchema = z.object({
   brand: z.string().min(1, "Brand harus dipilih"),
@@ -74,63 +76,38 @@ export default function DocumentForm() {
   };
 
   const onSubmit = async (data: FormDataType) => {
-    if (!formData) return;
     setIsLoading(true);
     setIsDialogOpen(false);
-
+  
     try {
       const formData = new FormData();
-      formData.append("brand", data.brand);
-      formData.append("cluster", data.cluster);
-      formData.append("fitur", data.fitur);
-      formData.append("namaMateri", data.namaMateri);
-      formData.append("jenis", data.jenis);
-      formData.append("startDate", data.startDate?.toISOString() || "");
-      formData.append("endDate", data.endDate?.toISOString() || "");
-      formData.append("periode", data.periode);
-
-      formData.append("linkDokumen", data.linkDokumen);
-      formData.append("tipeMateri", data.tipeMateri);
-      data.keywords.forEach((kw, index) => formData.append(`keywords[${index}]`, kw));
-      if (thumbnail) formData.append("thumbnail", thumbnail); // Upload file jika ada
-
-      console.log(formData);
+      Object.entries(data).forEach(([key, value]) => {
+        if (value instanceof File) {
+          formData.append(key, value);
+        } else {
+          formData.append(key, String(value));
+        }
+      });
+  
       const response = await fetch("http://localhost:5000/api/materi", {
         method: "POST",
         body: formData,
       });
-
+  
       if (!response.ok) throw new Error("Gagal mengirim data");
-
+  
       toast({
-        description: (
-          <div className="flex flex-col gap-1">
-            <div className="flex items-center gap-2 text-green-800 font-semibold">
-              <CheckCircle className="h-4 w-4 text-green-600" />
-              <span>Data berhasil disimpan</span>
-            </div>
-            <span className="text-green-800">Materi komunikasi berhasil tersimpan</span>
-          </div>
-        ),
-        className: "bg-green-100 border border-green-300 shadow-md rounded-lg",
+        description: "Data berhasil disimpan!",
+        className: "bg-green-100 border border-green-300",
       });
-
-      setThumbnail(null);
-      setPreview(null);
-      reset(); 
-
+  
+      reset();
       router.push("/dashboard");
     } catch (error) {
-      console.error("Error:", error);
       toast({
         title: "Gagal menyimpan",
-        description: (
-          <div className="flex items-center gap-2">
-            <XCircle className="h-5 w-5 text-red-600" />
-            <span>Terjadi kesalahan, coba lagi nanti.</span>
-          </div>
-        ),
-        className: "bg-red-100 text-red-800 border border-red-400",
+        description: "Terjadi kesalahan, coba lagi nanti.",
+        className: "bg-red-100 text-red-800",
       });
     } finally {
       setIsLoading(false);
@@ -347,45 +324,35 @@ export default function DocumentForm() {
             </div>
 
             {/* Button Tambah Keyword */}
-            <Button
-              variant="outline"
-              className="flex items-center gap-2"
+            <ButtonWithIcon
+              icon={Plus}
+              label="Tambah Keyword"
               onClick={addKeyword}
-              type="button"
-            >
-              <Plus className="w-4 h-4" />
-              Tambah Keyword
-            </Button>
+              className="border border-gray-300 text-gray-700 hover:bg-gray-100"
+            />
 
             <HorizontalLine />
 
             {/* Button Tambah Dokumen */}
-            <Button
-              className="bg-black text-white py-2 flex items-center justify-center gap-2"
+            <ButtonWithIcon
+              icon={isLoading ? Loader2 : Plus}
+              label={isLoading ? "Mengirim..." : "Tambah Dokumen"}
+              onClick={handleSubmit(onSubmit)}
+              className="bg-black text-white py-2 justify-center disabled:opacity-50"
               type="submit"
-              disabled={isLoading}
-            >
-              {isLoading ? (
-                <Loader2 className="w-4 h-4 animate-spin" />
-              ) : (
-                <Plus className="w-4 h-4" />
-              )}
-              {isLoading ? "Mengirim..." : "Tambah Dokumen"}
-            </Button>
+            />
           </CardContent>
         </Card>
-        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-          <DialogContent>
-            <DialogTitle>Konfirmasi Simpan</DialogTitle>
-            <p>Apakah Anda yakin ingin menyimpan dokumen ini?</p>
-            <DialogFooter>
-              <Button variant="outline" onClick={() => setIsDialogOpen(false)}>Batal</Button>
-              <Button onClick={handleSubmit(onSubmit)} disabled={isLoading}>
-                Ya, Simpan
-              </Button>
-            </DialogFooter>
-          </DialogContent>
-        </Dialog>
+
+        <ConfirmDialog
+          open={isDialogOpen}
+          onClose={() => setIsDialogOpen(false)}
+          onConfirm={handleSubmit(onSubmit)}
+          title="Konfirmasi Simpan"
+          description="Apakah Anda yakin ingin menyimpan dokumen ini?"
+          isLoading={isLoading}
+        />
+
       </form>
     </FormProvider>
   );
