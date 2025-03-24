@@ -13,7 +13,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 
-import useFilterStore from "../../store/useFilterStore";
+import useFilterStore from "../../../../store/useFilterStore";
 
 const FilterDate: React.FC = () => {
   const { tempFilters, setTempFilter, applyFilters } = useFilterStore();

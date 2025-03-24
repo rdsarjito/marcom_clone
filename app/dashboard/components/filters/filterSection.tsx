@@ -9,7 +9,7 @@ import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 
 // ✅ 3. Relative imports (parent folder `../`)
-import useFilterStore from "../../store/useFilterStore";
+import useFilterStore from "../../../../store/useFilterStore";
 import { filterOptions } from "../../data/filterOptions";
 
 // ✅ 4. Relative imports (same folder `./`)

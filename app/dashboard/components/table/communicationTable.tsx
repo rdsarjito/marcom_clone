@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 
-import useFilterStore from "../../store/useFilterStore";
+import useFilterStore from "../../../../store/useFilterStore";
 import { data, columns } from "../../data/communicationData";
 
 import ReusableTable from "./reusableTable";

@@ -1,0 +1,49 @@
+import { useState } from "react";
+import { Card } from "@/components/ui/card";
+import { Upload } from "lucide-react";
+import { Label } from "@/components/ui/label";
+import { useFormContext } from "react-hook-form";
+
+interface UploadThumbnailProps {
+  name: string;
+  label?: string;
+}
+
+export default function UploadThumbnail({ name, label = "Upload Thumbnail" }: UploadThumbnailProps) {
+  const { setValue } = useFormContext();
+  const [preview, setPreview] = useState<string | null>(null);
+  const [thumbnail, setThumbnail] = useState<File | null>(null);
+
+  const handleThumbnailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setThumbnail(file);
+      setPreview(URL.createObjectURL(file));
+      setValue(name, file);
+    }
+  };
+
+  return (
+    <div className="space-y-2">
+      <Label>{label}</Label>
+      <div className="flex items-center gap-4">
+        <label className="cursor-pointer">
+          <input
+            type="file"
+            accept="image/*"
+            className="hidden"
+            onChange={handleThumbnailChange}
+          />
+          <Card className="w-16 h-16 flex items-center justify-center border rounded-lg cursor-pointer hover:bg-gray-100">
+            {preview ? (
+              <img src={preview} alt="Preview" className="w-full h-full object-cover rounded-lg" />
+            ) : (
+              <Upload className="w-5 h-5 text-gray-500" />
+            )}
+          </Card>
+        </label>
+        {thumbnail && <p className="text-sm">{thumbnail.name}</p>}
+      </div>
+    </div>
+  );
+}
