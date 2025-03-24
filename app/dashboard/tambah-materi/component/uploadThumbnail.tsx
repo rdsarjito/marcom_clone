@@ -3,13 +3,17 @@ import { Card } from "@/components/ui/card";
 import { Upload } from "lucide-react";
 import { Label } from "@/components/ui/label";
 import { useFormContext } from "react-hook-form";
+import Image from "next/image";
 
 interface UploadThumbnailProps {
   name: string;
   label?: string;
 }
 
-export default function UploadThumbnail({ name, label = "Upload Thumbnail" }: UploadThumbnailProps) {
+export default function UploadThumbnail({
+  name,
+  label = "Upload Thumbnail",
+}: UploadThumbnailProps) {
   const { setValue } = useFormContext();
   const [preview, setPreview] = useState<string | null>(null);
   const [thumbnail, setThumbnail] = useState<File | null>(null);
@@ -36,7 +40,11 @@ export default function UploadThumbnail({ name, label = "Upload Thumbnail" }: Up
           />
           <Card className="w-16 h-16 flex items-center justify-center border rounded-lg cursor-pointer hover:bg-gray-100">
             {preview ? (
-              <img src={preview} alt="Preview" className="w-full h-full object-cover rounded-lg" />
+              <Image
+                src={preview}
+                alt="Preview"
+                className="w-full h-full object-cover rounded-lg"
+              />
             ) : (
               <Upload className="w-5 h-5 text-gray-500" />
             )}

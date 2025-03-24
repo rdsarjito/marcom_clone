@@ -56,7 +56,9 @@ export function useDocumentForm() {
               <CheckCircle className="h-4 w-4 text-green-600" />
               <span>Data berhasil disimpan</span>
             </div>
-            <span className="text-green-800">Materi komunikasi berhasil tersimpan</span>
+            <span className="text-green-800">
+              Materi komunikasi berhasil tersimpan
+            </span>
           </div>
         ),
         className: "bg-green-100 border border-green-300 shadow-md rounded-lg",
@@ -65,6 +67,7 @@ export function useDocumentForm() {
       reset();
       router.push("/dashboard");
     } catch (error) {
+      console.log(error);
       toast({
         title: "Gagal menyimpan",
         description: "Terjadi kesalahan, coba lagi nanti.",

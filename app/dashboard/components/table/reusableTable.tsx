@@ -1,21 +1,33 @@
 "use client";
 
-import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "@/components/ui/table"; // Sesuaikan path jika perlu
+import {
+  Table,
+  TableHeader,
+  TableRow,
+  TableHead,
+  TableBody,
+  TableCell,
+} from "@/components/ui/table"; // Sesuaikan path jika perlu
 import Link from "next/link";
 
 interface Column {
-  header: string; 
-  accessor: string; 
-  isLink?: boolean; 
+  header: string;
+  accessor: string;
+  isLink?: boolean;
 }
 
 interface ReusableTableProps {
-  title: string; 
-  columns: Column[]; 
-  data: any[]; 
+  title: string;
+  columns: Column[];
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  data: any[];
 }
 
-const ReusableTable: React.FC<ReusableTableProps> = ({ title, columns, data }) => {
+const ReusableTable: React.FC<ReusableTableProps> = ({
+  title,
+  columns,
+  data,
+}) => {
   return (
     <div>
       <h2 className="text-2xl font-bold mb-6">{title}</h2>
@@ -36,7 +48,10 @@ const ReusableTable: React.FC<ReusableTableProps> = ({ title, columns, data }) =
                   {columns.map((col, colIndex) => (
                     <TableCell key={colIndex}>
                       {col.isLink ? (
-                        <Link href={item[col.accessor]} className="text-blue-600 hover:underline">
+                        <Link
+                          href={item[col.accessor]}
+                          className="text-blue-600 hover:underline"
+                        >
                           {item[col.accessor]}
                         </Link>
                       ) : (
@@ -48,7 +63,10 @@ const ReusableTable: React.FC<ReusableTableProps> = ({ title, columns, data }) =
               ))
             ) : (
               <TableRow>
-                <TableCell colSpan={columns.length} className="text-center py-4">
+                <TableCell
+                  colSpan={columns.length}
+                  className="text-center py-4"
+                >
                   Tidak ada data yang cocok dengan filter
                 </TableCell>
               </TableRow>
