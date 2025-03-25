@@ -1,12 +1,13 @@
 "use client";
 
 import * as React from "react";
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
+import { format } from "date-fns";
 import { CalendarIcon } from "lucide-react";
+import { DateRange } from "react-day-picker";
 
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import { Calendar } from "@/components/ui/calendar";
 import {
   Popover,
   PopoverContent,
@@ -21,22 +22,19 @@ const FilterDate: React.FC = () => {
   const today = new Date();
   const startOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
 
-  const [startDate, setStartDate] = React.useState<Date | null>(
-    tempFilters.startDate ? new Date(tempFilters.startDate) : startOfMonth
+  const [dateRange, setDateRange] = React.useState<DateRange | undefined>(
+    tempFilters.startDate && tempFilters.endDate
+      ? {
+          from: new Date(tempFilters.startDate),
+          to: new Date(tempFilters.endDate),
+        }
+      : { from: startOfMonth, to: today }
   );
 
-  const [endDate, setEndDate] = React.useState<Date | null>(
-    tempFilters.endDate ? new Date(tempFilters.endDate) : today
-  );
-
-  const handleDateChange = (dates: [Date | null, Date | null]) => {
-    const [start, end] = dates;
-    setStartDate(start);
-    setEndDate(end);
-
-    if (start) setTempFilter("startDate", start.toISOString());
-    if (end) setTempFilter("endDate", end.toISOString());
-
+  const handleDateChange = (range: DateRange | undefined) => {
+    setDateRange(range);
+    if (range?.from) setTempFilter("startDate", range.from.toISOString());
+    if (range?.to) setTempFilter("endDate", range.to.toISOString());
     applyFilters();
   };
 
@@ -49,13 +47,20 @@ const FilterDate: React.FC = () => {
             variant="outline"
             className={cn(
               "w-[260px] justify-between text-left font-normal",
-              !startDate && !endDate && "text-muted-foreground"
+              !dateRange?.from && !dateRange?.to && "text-muted-foreground"
             )}
           >
             <div className="flex items-center">
               <CalendarIcon className="mr-2 h-4 w-4" />
-              {startDate && endDate ? (
-                `${startDate.toLocaleDateString()} - ${endDate.toLocaleDateString()}`
+              {dateRange?.from ? (
+                dateRange.to ? (
+                  `${format(dateRange.from, "LLL dd, y")} - ${format(
+                    dateRange.to,
+                    "LLL dd, y"
+                  )}`
+                ) : (
+                  format(dateRange.from, "LLL dd, y")
+                )
               ) : (
                 <span>Pilih rentang tanggal</span>
               )}
@@ -63,16 +68,13 @@ const FilterDate: React.FC = () => {
           </Button>
         </PopoverTrigger>
         <PopoverContent className="w-auto p-0" align="start">
-          <DatePicker
-            selected={startDate}
-            onChange={handleDateChange}
-            startDate={startDate}
-            endDate={endDate}
-            selectsRange
-            inline
-            showYearDropdown
-            scrollableYearDropdown
-            yearDropdownItemNumber={15} // Menampilkan 15 tahun dalam dropdown
+          <Calendar
+            initialFocus
+            mode="range"
+            defaultMonth={dateRange?.from}
+            selected={dateRange}
+            onSelect={handleDateChange}
+            numberOfMonths={2}
           />
         </PopoverContent>
       </Popover>

@@ -35,7 +35,7 @@ export default function FilterSection() {
   };
 
   const handleTambahMateri = () => {
-    router.push("/dashboard/tambah-materi"); // Navigasi ke halaman tambah materi
+    router.push("/dashboard/tambah-materi");
   };
 
   return (

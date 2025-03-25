@@ -5,7 +5,7 @@ import { useState } from "react";
 import useFilterStore from "../../../../store/useFilterStore";
 import { data, columns } from "../../data/communicationData";
 
-import ReusableTable from "./reusableTable";
+import ReusableTable from "../../uiRama/reusableTable";
 
 export default function CommunicationTable() {
   const [currentPage] = useState(1);

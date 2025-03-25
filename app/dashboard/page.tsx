@@ -2,7 +2,7 @@ import "../globals.css";
 import { Box } from "lucide-react";
 
 import FilterSection from "./components/filters/filterSection";
-import FilterDate from "./components/filters/filterDate";
+import DatePickerWithRange from "./components/filters/filterDate";
 import { Card, CardContent } from "@/components/ui/card";
 import CommunicationTable from "./components/table/communicationTable";
 
@@ -29,7 +29,7 @@ export default function Page() {
     <main className="min-h-screen">
       {/* Filter tanggal */}
       <section className="p-4">
-        <FilterDate />
+        <DatePickerWithRange />
       </section>
 
       {/* Kartu statistik */}

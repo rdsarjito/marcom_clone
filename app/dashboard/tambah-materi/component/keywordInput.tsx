@@ -6,8 +6,9 @@ import ButtonWithIcon from "../../uiRama/buttonWithIcon";
 
 export function KeywordsInput() {
   const { getValues, setValue, watch } = useFormContext();
-  const [initialized, setInitialized] = useState(false);
 
+  const [initialized, setInitialized] = useState(false);
+  
   const keywords: string[] = watch("keywords", []);
 
   useEffect(() => {
