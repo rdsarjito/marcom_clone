@@ -56,7 +56,6 @@ export default function Page() {
       <section>
         <FilterSection />
         <CommunicationTable />
-        {/* <FormBaru /> */}
       </section>
     </main>
   );

@@ -64,7 +64,7 @@ export default function FilterSection() {
           <ButtonWithIcon
             icon={PlusCircle}
             label="Tambah Materi Komunikasi"
-            className="bg-black text-white hover:bg-gray-800"
+            className="bg-black text-white"
             onClick={handleTambahMateri}
           />
         </div>
