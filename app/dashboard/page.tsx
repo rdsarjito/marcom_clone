@@ -1,4 +1,3 @@
-import "../globals.css";
 import { Box } from "lucide-react";
 
 import FilterSection from "./components/filters/filterSection";
@@ -56,6 +55,7 @@ export default function Page() {
       <section>
         <FilterSection />
         <CommunicationTable />
+        {/* <FormBaru /> */}
       </section>
     </main>
   );
