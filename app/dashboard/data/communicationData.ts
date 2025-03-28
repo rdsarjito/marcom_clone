@@ -48,7 +48,7 @@ export const data = [
     tipe: "Key Visual",
     status: "Aktif",
     jenis: "Tematik",
-    periode: "2023-07-12 - 2025-07-12",
+    periode: "2023-07-12 - 2025-02-12",
     keyword: "Donasi, Cashback, QRIS",
   },
   {
