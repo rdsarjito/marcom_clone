@@ -7,11 +7,7 @@ import { DateRange } from "react-day-picker";
 
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 
 import useFilterStore from "../../../../store/useFilterStore";
@@ -22,16 +18,27 @@ const FilterDate: React.FC = () => {
 
   const [dateRange, setDateRange] = React.useState<DateRange | undefined>(
     tempFilters.startDate && tempFilters.endDate
-      ? {
-          from: new Date(tempFilters.startDate),
-          to: new Date(tempFilters.endDate),
-        }
+      ? { from: new Date(tempFilters.startDate), to: new Date(tempFilters.endDate) }
       : undefined
   );
 
   const [isCustomRange, setIsCustomRange] = React.useState(false);
 
-  const [showCalendar, setShowCalendar] = React.useState(false);
+  const getDateRange = (preset: string): { from: Date; to: Date } | null => {
+    switch (preset) {
+      case "Bulan ini":
+        return { from: new Date(today.getFullYear(), today.getMonth(), 1), to: today };
+      case "Bulan lalu":
+        return {
+          from: new Date(today.getFullYear(), today.getMonth() - 1, 1),
+          to: new Date(today.getFullYear(), today.getMonth(), 0),
+        };
+      case "Tahun ini":
+        return { from: new Date(today.getFullYear(), 0, 1), to: today };
+      default:
+        return null;
+    }
+  };
 
   const handleDateChange = (range: DateRange | undefined) => {
     setDateRange(range);
@@ -41,82 +48,63 @@ const FilterDate: React.FC = () => {
   };
 
   const handlePresetSelection = (preset: string) => {
-    let startDate, endDate;
-  
-    switch (preset) {
-      case "All time":
-        setDateRange(undefined);
-        setTempFilter("startDate", "");
-        setTempFilter("endDate", "");
-        setIsCustomRange(false); // Pastikan Kalender tetap tersembunyi
-        applyFilters();
-        return;
-      case "Bulan ini":
-        startDate = new Date(today.getFullYear(), today.getMonth(), 1);
-        endDate = today;
-        setIsCustomRange(false); // Jangan tampilkan Kalender
-        break;
-      case "Bulan lalu":
-        startDate = new Date(today.getFullYear(), today.getMonth() - 1, 1);
-        endDate = new Date(today.getFullYear(), today.getMonth(), 0);
-        setIsCustomRange(false); // Jangan tampilkan Kalender
-        break;
-      case "Tahun ini":
-        startDate = new Date(today.getFullYear(), 0, 1);
-        endDate = today;
-        setIsCustomRange(false); // Jangan tampilkan Kalender
-        break;
-      case "Pilih Periode Tertentu":
-        setDateRange(undefined);
-        setIsCustomRange(true); // Tampilkan Kalender
-        return;
-      default:
-        return;
+    if (preset === "All time") {
+      setDateRange(undefined);
+      setTempFilter("startDate", "");
+      setTempFilter("endDate", "");
+      setIsCustomRange(false);
+      applyFilters();
+      return;
     }
-  
-    setDateRange({ from: startDate, to: endDate });
-    setTempFilter("startDate", startDate.toISOString());
-    setTempFilter("endDate", endDate.toISOString());
-    applyFilters();
+
+    if (preset === "Pilih Tanggal Tertentu") {
+      setDateRange(undefined);
+      setIsCustomRange(true);
+      return;
+    }
+
+    const range = getDateRange(preset);
+    if (range) {
+      setDateRange(range);
+      setTempFilter("startDate", range.from.toISOString());
+      setTempFilter("endDate", range.to.toISOString());
+      setIsCustomRange(false);
+      applyFilters();
+    }
   };
-  
 
   return (
     <div className="flex items-center space-x-2">
       <span className="text-sm text-gray-700">Lihat data selama</span>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-        <Button variant="outline" className="w-[260px] justify-between">
-          {isCustomRange ? (
-            <span>Pilih tanggal...</span>
-          ) : dateRange?.from ? (
-            dateRange.to ? (
-              `${format(dateRange.from, "d MMM y")} - ${format(dateRange.to, "d MMM y")}`
+          <Button variant="outline" className="w-[260px] justify-between">
+            {isCustomRange ? (
+              <span>Pilih tanggal...</span>
+            ) : dateRange?.from ? (
+              dateRange.to ? (
+                `${format(dateRange.from, "d MMM y")} - ${format(dateRange.to, "d MMM y")}`
+              ) : (
+                format(dateRange.from, "d MMM y")
+              )
             ) : (
-              format(dateRange.from, "d MMM y")
-            )
-          ) : (
-            <span>All time</span>
-          )}
-          <ChevronDownIcon className="ml-2 h-4 w-4" />
-        </Button>
+              <span>All time</span>
+            )}
+            <ChevronDownIcon className="ml-2 h-4 w-4" />
+          </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-[260px]">
-          <DropdownMenuItem onClick={() => handlePresetSelection("All time")}>
-            All time
-          </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => handlePresetSelection("Bulan ini")}>
-            Bulan ini ({format(new Date(today.getFullYear(), today.getMonth(), 1), "d MMM y")} - {format(today, "d MMM y")})
-          </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => handlePresetSelection("Bulan lalu")}>
-            Bulan lalu ({format(new Date(today.getFullYear(), today.getMonth() - 1, 1), "MMMM yyyy")})
-          </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => handlePresetSelection("Tahun ini")}>
-            Tahun ini ({today.getFullYear()})
-          </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => handlePresetSelection("Pilih Periode Tertentu")}>
-            Pilih Periode Tertentu
-          </DropdownMenuItem>
+          {["All time", "Bulan ini", "Bulan lalu", "Tahun ini", "Pilih Tanggal Tertentu"].map((preset) => (
+            <DropdownMenuItem key={preset} onClick={() => handlePresetSelection(preset)}>
+              {preset === "Bulan ini"
+                ? `Bulan ini (${format(new Date(today.getFullYear(), today.getMonth(), 1), "d MMM y")} - ${format(today, "d MMM y")})`
+                : preset === "Bulan lalu"
+                ? `Bulan lalu (${format(new Date(today.getFullYear(), today.getMonth() - 1, 1), "MMMM yyyy")})`
+                : preset === "Tahun ini"
+                ? `Tahun ini (${today.getFullYear()})`
+                : preset}
+            </DropdownMenuItem>
+          ))}
         </DropdownMenuContent>
       </DropdownMenu>
 
