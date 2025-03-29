@@ -57,7 +57,7 @@ const FilterDate: React.FC = () => {
       return;
     }
 
-    if (preset === "Pilih Tanggal Tertentu") {
+    if (preset === "Pilih tanggal tertentu") {
       setDateRange(undefined);
       setIsCustomRange(true);
       return;
@@ -80,7 +80,7 @@ const FilterDate: React.FC = () => {
         <DropdownMenuTrigger asChild>
           <Button variant="outline" className="w-[260px] justify-between">
             {isCustomRange ? (
-              <span>Pilih tanggal...</span>
+              <span>Pilih tanggal tertentu</span>
             ) : dateRange?.from ? (
               dateRange.to ? (
                 `${format(dateRange.from, "d MMM y")} - ${format(dateRange.to, "d MMM y")}`
@@ -94,7 +94,7 @@ const FilterDate: React.FC = () => {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-[260px]">
-          {["All time", "Bulan ini", "Bulan lalu", "Tahun ini", "Pilih Tanggal Tertentu"].map((preset) => (
+          {["All time", "Bulan ini", "Bulan lalu", "Tahun ini", "Pilih tanggal tertentu"].map((preset) => (
             <DropdownMenuItem key={preset} onClick={() => handlePresetSelection(preset)}>
               {preset === "Bulan ini"
                 ? `Bulan ini (${format(new Date(today.getFullYear(), today.getMonth(), 1), "d MMM y")} - ${format(today, "d MMM y")})`
@@ -112,8 +112,8 @@ const FilterDate: React.FC = () => {
         <Popover>
           <PopoverTrigger asChild>
             <Button variant="outline" className="ml-2">
+              Periode Data
               <CalendarIcon className="mr-2 h-4 w-4" />
-              Kalender
             </Button>
           </PopoverTrigger>
           <PopoverContent className="w-auto p-0" align="start">

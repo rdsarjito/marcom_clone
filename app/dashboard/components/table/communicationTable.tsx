@@ -1,42 +1,78 @@
 "use client";
 
-import { useState } from "react";
-
+import { useState, useEffect } from "react";
 import useFilterStore from "../../../../store/useFilterStore";
-import { data, columns } from "../../data/communicationData";
+import MateriTable from "./fetchTable";
 
-import ReusableTable from "../../uiRama/reusableTable";
+interface Materi {
+  _id: string;
+  brand: string;
+  cluster: string;
+  fitur: string;
+  namaMateri: string;
+  jenis: string;
+  startDate: string;
+  endDate: string;
+  periode: string;
+  thumbnail: string;
+  linkDokumen: string;
+  tipeMateri: string;
+  keywords: string[];
+}
 
 export default function CommunicationTable() {
-  const [currentPage] = useState(1);
+  const [data, setData] = useState<Materi[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const response = await fetch("http://localhost:5000/api/materi");
+        if (!response.ok) throw new Error("Gagal mengambil data");
+        const result = await response.json();
+        setData(result);
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchData();
+  }, []);
+
+  const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
   const { filters, searchQuery } = useFilterStore();
 
   const filteredData = data.filter((item) => {
     const { startDate, endDate } = filters;
-
-    const [itemStart, itemEnd] = item.periode.split(" - ");
-    const itemStartDate = new Date(itemStart);
-    const itemEndDate = new Date(itemEnd);
+  
+    // Parsing startDate & endDate dari API
+    const itemStartDate = item.startDate ? new Date(item.startDate) : null;
+    const itemEndDate = item.endDate ? new Date(item.endDate) : null;
+    
     const filterStartDate = startDate ? new Date(startDate) : null;
     const filterEndDate = endDate ? new Date(endDate) : null;
-
+  
+    // Pastikan tanggal valid sebelum melakukan perbandingan
     const isInRange =
-      (!filterStartDate || itemEndDate >= filterStartDate) &&
-      (!filterEndDate || itemStartDate <= filterEndDate);
-
+      (!filterStartDate || (itemEndDate && itemEndDate >= filterStartDate)) &&
+      (!filterEndDate || (itemStartDate && itemStartDate <= filterEndDate));
+  
+    // Filter berdasarkan kondisi lain selain tanggal
     const matchesFilters = Object.entries(filters).every(
       ([key, value]) =>
         key === "startDate" ||
         key === "endDate" ||
         !value ||
-        item[key as keyof typeof item] === value,
+        item[key as keyof typeof item] === value
     );
-
-    const matchesSearch = item.materi
+  
+    // Filter berdasarkan pencarian
+    const matchesSearch = item.namaMateri
       .toLowerCase()
       .includes(searchQuery.toLowerCase());
-
+  
     return isInRange && matchesFilters && matchesSearch;
   });
 
@@ -45,12 +81,10 @@ export default function CommunicationTable() {
 
   return (
     <div className="p-4">
-      <ReusableTable
-        title="Daftar Materi Komunikasi"
-        columns={columns}
-        data={filteredData.slice(startIndex, endIndex)}
-      />
+      <MateriTable title="Daftar Materi" data={filteredData.slice(startIndex, endIndex)} />
+      <p className="mt-4 text-sm text-gray-600">
+        Showing {startIndex + 1}-{endIndex} of {filteredData.length} data
+      </p>
     </div>
   );
 }
-

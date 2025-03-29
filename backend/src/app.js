@@ -25,6 +25,7 @@ const upload = multer({ storage });
 // Middleware
 app.use(cors());
 app.use(express.json());
+app.use('/uploads', express.static('uploads'));
 
 // Gunakan middleware upload.single('thumbnail') untuk upload file di materiRoutes
 app.use('/api/materi', upload.single('thumbnail'), materiRoutes);

@@ -41,6 +41,8 @@ export default function UploadThumbnail({
           <Card className="w-16 h-16 flex items-center justify-center border rounded-lg cursor-pointer hover:bg-gray-100">
             {preview ? (
               <Image
+                width={64}
+                height={64}
                 src={preview}
                 alt="Preview"
                 className="w-full h-full object-cover rounded-lg"

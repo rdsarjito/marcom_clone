@@ -25,7 +25,9 @@ export default function SelectField({ name, label, options, value, onChange }: R
         value={isForm ? form.watch(name!) : value}
       >
         <SelectTrigger className="text-gray-600">
-          <SelectValue placeholder={`Pilih ${label || "opsi"}`} />
+          <SelectValue 
+            placeholder={`Pilih ${label ? label.charAt(0).toUpperCase() + label.slice(1) : "Opsi"}`} 
+          />
         </SelectTrigger>
         <SelectContent>
           {options.map((option) => (

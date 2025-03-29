@@ -19,10 +19,9 @@ const ReusableTable: React.FC<ReusableTableProps> = ({ title, columns, data }) =
   return (
     <div>
       <h2 className="text-2xl font-bold mb-6">{title}</h2>
-
       <div className="overflow-x-auto mt-4">
         <Table className="table-auto w-full border-collapse">
-          <TableHeader className="bg-gray-100">
+          <TableHeader className="">
             <TableRow>
               {columns.map((col, idx) => (
                 <TableHead key={idx}>{col.header}</TableHead>
