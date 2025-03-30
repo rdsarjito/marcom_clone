@@ -40,8 +40,8 @@ const useFormStore = create<FormState>((set) => ({
       newKeywords[index] = value;
       return { keywords: newKeywords };
     }),
-  setStartDate: (date: Date) => set({ startDate: date }), // ✅ Tambahkan fungsi ini
-  setEndDate: (date: Date) => set({ endDate: date }), // ✅ Tambahkan fungsi ini
+  setStartDate: (date: Date) => set({ startDate: date }), 
+  setEndDate: (date: Date) => set({ endDate: date }), 
   resetForm: () =>
     set({
       brand: "",

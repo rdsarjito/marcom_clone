@@ -5,7 +5,7 @@ import useFilterStore from "@/store/useFilterStore";
 import useSelectedFilters from "@/hooks/useSelectedFilters";
 import HorizontalLine from "../../../uiRama/horizontalLine";
 import FilterGroup from "./FilterGroup";
-import SearchAndActions from "./searchAndActions";
+import SearchAndActions from "./SearchAndActions";
 
 export default function FilterOption() {
   const { applyFilters, setSearchQuery } = useFilterStore();

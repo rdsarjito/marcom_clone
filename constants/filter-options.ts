@@ -1,4 +1,3 @@
-// /constants/filterOptions.ts
 export type FilterKey = "brand" | "cluster" | "fitur" | "status" | "tipe";
 
 export const filterOptions: Record<FilterKey, string[]> = {

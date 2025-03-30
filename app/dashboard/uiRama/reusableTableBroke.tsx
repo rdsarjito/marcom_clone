@@ -15,7 +15,7 @@ interface ReusableTableProps {
   data: any[]; 
 }
 
-const ReusableTable: React.FC<ReusableTableProps> = ({ title, columns, data }) => {
+const ReusableTableBroke: React.FC<ReusableTableProps> = ({ title, columns, data }) => {
   return (
     <div>
       <h2 className="text-2xl font-bold mb-6">{title}</h2>
@@ -59,4 +59,4 @@ const ReusableTable: React.FC<ReusableTableProps> = ({ title, columns, data }) =
   );
 };
 
-export default ReusableTable;
+export default ReusableTableBroke;

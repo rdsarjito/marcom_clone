@@ -2,54 +2,36 @@
 
 import { useEffect } from "react";
 import useMateriStore from "../../../../store/useMateriStore";
-import useFilterStore from "../../../../store/useFilterStore";
-import ReusableTable from "./ReusableTable";
+import useFilteredMateri from "../../../../hooks/useFilteredMateri";
+import { paginate } from "../../../../lib/paginate";
+import ListTable from "./ListTable";
+import { Progress } from "@/components/ui/progress";
 
 export default function MateriTable() {
-  const { data, loading, currentPage, itemsPerPage, fetchData, setCurrentPage } = useMateriStore();
-  const { filters, searchQuery } = useFilterStore();
+  const { loading, currentPage, itemsPerPage, fetchData, setCurrentPage } = useMateriStore();
+  const filteredData = useFilteredMateri();
 
   useEffect(() => {
     fetchData();
   }, [fetchData]);
 
-  const filteredData = data.filter((item) => {
-    const { startDate, endDate } = filters;
-  
-    const itemStartDate = item.startDate ? new Date(item.startDate) : null;
-    const itemEndDate = item.endDate ? new Date(item.endDate) : null;
-    
-    const filterStartDate = startDate ? new Date(startDate) : null;
-    const filterEndDate = endDate ? new Date(endDate) : null;
-  
-    const isInRange =
-      (!filterStartDate || (itemEndDate && itemEndDate >= filterStartDate)) &&
-      (!filterEndDate || (itemStartDate && itemStartDate <= filterEndDate));
-  
-    const matchesFilters = Object.entries(filters).every(
-      ([key, value]) =>
-        key === "startDate" ||
-        key === "endDate" ||
-        !value ||
-        item[key as keyof typeof item] === value
-    );
-  
-    const matchesSearch = item.namaMateri
-      .toLowerCase()
-      .includes(searchQuery.toLowerCase());
-  
-    return isInRange && matchesFilters && matchesSearch;
-  });
-
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const endIndex = Math.min(startIndex + itemsPerPage, filteredData.length);
+  const { paginatedData, startIndex, endIndex, total } = paginate(filteredData, currentPage, itemsPerPage);
 
   return (
     <div className="p-4">
-      <ReusableTable title="Daftar Materi" data={filteredData.slice(startIndex, endIndex)} />
-      <p className="mt-4 text-sm text-gray-600">
-        Showing {startIndex + 1}-{endIndex} of {filteredData.length} data
-      </p>
+      {loading ? (
+        <div className="flex flex-col items-center">
+          <Progress value={33} className="w-[60%]" />
+          <p className="mt-2 text-sm text-gray-600">Memuat data...</p>
+        </div>
+      ) : (
+        <>
+          <ListTable title="Daftar Materi Komunikasi" data={paginatedData} />
+          <p className="mt-4 text-sm text-gray-600">
+            Showing {startIndex + 1}-{endIndex} of {total} products
+          </p>
+        </>
+      )}
     </div>
   );
 }

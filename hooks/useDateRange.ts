@@ -16,8 +16,8 @@ const useDateRange = () => {
   const [isCustomRange, setIsCustomRange] = React.useState(false);
 
   const presetRanges: Record<PresetDate, { from: Date; to: Date } | null> = {
-    [PresetDate.ALL_TIME]: null, // Tidak memiliki rentang tanggal tertentu
-    [PresetDate.CUSTOM]: null, // Ditentukan oleh pengguna secara manual
+    [PresetDate.ALL_TIME]: null, 
+    [PresetDate.CUSTOM]: null, 
     [PresetDate.THIS_MONTH]: { from: new Date(today.getFullYear(), today.getMonth(), 1), to: today },
     [PresetDate.LAST_MONTH]: {
       from: new Date(today.getFullYear(), today.getMonth() - 1, 1),
@@ -32,7 +32,7 @@ const useDateRange = () => {
       setTempFilter("startDate", "");
       setTempFilter("endDate", "");
     } else {
-      setDateRange({ from: range.from, to: range.to ?? range.from }); // Pastikan `to` tidak undefined
+      setDateRange({ from: range.from, to: range.to ?? range.from }); 
       setTempFilter("startDate", range.from.toISOString());
       setTempFilter("endDate", (range.to ?? range.from).toISOString());
     }

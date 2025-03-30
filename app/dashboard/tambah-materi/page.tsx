@@ -3,8 +3,8 @@
 import { FormProvider } from "react-hook-form";
 import ConfirmDialog from "../uiRama/confirmDialog";
 import { useDocumentForm } from "../../../hooks/useDocumentForm";
-import InformasiUmum from "./component/informasiUmum";
-import DokumenMateri from "./component/dokumenMateri";
+import InformasiUmum from "./component/InformasiUmum";
+import DokumenMateri from "./component/DokumenMateri";
 
 export default function TambahMateri() {
   const { methods, handleSubmit, isLoading, isDialogOpen, setIsDialogOpen, onSubmit } = useDocumentForm();
