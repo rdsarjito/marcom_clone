@@ -1,7 +1,7 @@
 export const filterOptions = {
-    brand: ["brimo", "Brand A", "Brand B"],
+    brand: ["BRImo"],
     cluster: ["Bayar-Bayar Harian", "Bayar-bayar Bulanan", "Tagihan"],
-    fitur: ["Donasi", "Belanja Bulanan", "Transfer Internasional"],
+    fitur: ["Donasi", "QRIS Source CC", "Transfer Internasional"],
     status: ["Aktif", "Expired"],
     tipe: ["Key Visual", "TVC", "Video"],
 } as const;

@@ -8,9 +8,8 @@ export const formSchema = z.object({
   jenis: z.string().min(1, "Jenis harus dipilih"),
   startDate: z.date({ required_error: "Tanggal mulai harus dipilih" }),
   endDate: z.date({ required_error: "Tanggal berakhir harus dipilih" }),
-  periode: z.string().min(1, "Periode harus dipilih"),
   linkDokumen: z.string().url({ message: "Masukkan URL yang valid" }),
-  tipeMateri: z.enum(["pdf", "video", "dokumen"], {
+  tipeMateri: z.enum(["Key Visual", "TVC", "Video"], {
     message: "Pilih tipe materi yang valid",
   }),
   keywords: z.array(z.string().min(1, "Keyword tidak boleh kosong")),

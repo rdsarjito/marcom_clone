@@ -2,7 +2,7 @@
 
 import { FormProvider } from "react-hook-form";
 import ConfirmDialog from "../uiRama/confirmDialog";
-import { useDocumentForm } from "./hooks/useDocumentForm";
+import { useDocumentForm } from "../../../hooks/useDocumentForm";
 import InformasiUmum from "./component/informasiUmum";
 import DokumenMateri from "./component/dokumenMateri";
 

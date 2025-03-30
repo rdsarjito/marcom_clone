@@ -1,14 +1,16 @@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import Image from "next/image";
 
+import { format } from "date-fns";
+
+import Image from "next/image";
 
 interface ReusableTableProps {
   title: string; 
   data: any[]; 
 }
 
-const MateriTable: React.FC<ReusableTableProps> = ({ title, data }) => {
+const ReusableTable: React.FC<ReusableTableProps> = ({ title, data }) => {
   return (
     <div>
         <h2 className="text-2xl font-bold mb-6">Daftar Materi Komunikasi</h2>
@@ -39,7 +41,7 @@ const MateriTable: React.FC<ReusableTableProps> = ({ title, data }) => {
                         <Image
                         src={`http://localhost:5000/${materi.thumbnail}`}
                         alt={materi.namaMateri}
-                        width={50} // Ukuran lebih kecil agar proporsional
+                        width={50}
                         height={50}
                         unoptimized={true}
                         className="w-12 h-12 object-cover rounded-md"
@@ -58,6 +60,8 @@ const MateriTable: React.FC<ReusableTableProps> = ({ title, data }) => {
                         const start = new Date(materi.startDate);
                         const end = new Date(materi.endDate);
 
+                        console.log(materi)
+
                         return today >= start && today <= end ? (
                         <span className="text-green-500 font-semibold">Aktif</span>
                         ) : (
@@ -66,7 +70,16 @@ const MateriTable: React.FC<ReusableTableProps> = ({ title, data }) => {
                     })()}
                     </TableCell>
                 <TableCell>{materi.jenis}</TableCell>
-                <TableCell>{materi.periode}</TableCell>
+                {/* Periode */}
+                <TableCell>
+                    {(() => {
+                      const formattedPeriode = `${format(new Date(materi.startDate), "yyyy-MM-dd")} - ${format(new Date(materi.endDate), "yyyy-MM-dd")}`;
+
+                      return formattedPeriode;
+                    })()}
+                </TableCell>
+
+
                 <TableCell>{materi.keywords.join(", ")}</TableCell>
                 <TableCell>
 
@@ -80,4 +93,4 @@ const MateriTable: React.FC<ReusableTableProps> = ({ title, data }) => {
   );
 }
 
-export default MateriTable;
+export default ReusableTable;

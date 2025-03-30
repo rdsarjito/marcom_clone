@@ -2,9 +2,9 @@
 
 import { useState } from "react"; // Import useState
 
-import FilterSection from "./components/filters/filterSection";
-import DatePickerWithRange from "./components/filters/filterDate";
-import CommunicationTable from "./components/table/communicationTable";
+import FilterOption from "./components/filters/filterOption/filterOption";
+import DatePickerWithRange from "./components/filters/filterDate/filterDate";
+import MateriTabel from "./components/table/materiTabel";
 import { Switch } from "@/components/ui/switch";
 import StatsSection from "./components/stats/statsSection";
 
@@ -33,8 +33,8 @@ export default function Page() {
 
       {/* Filter tambahan dan tabel data */}
       <section>
-        <FilterSection />
-        <CommunicationTable />
+        <FilterOption />
+        <MateriTabel />
       </section>
     </main>
   );

@@ -25,9 +25,9 @@ export default function DokumenMateri({ isLoading }: DokumenMateriProps) {
         />
 
         <SelectField name="tipeMateri" label="Tipe Materi" options={[
-          { value: "pdf", label: "PDF" },
-          { value: "video", label: "Video" },
-          { value: "dokumen", label: "Dokumen" },
+          { value: "Key Visual", label: "Key Visual" },
+          { value: "TVC", label: "TVC" },
+          { value: "Video", label: "Video" },
         ]} />
 
         <UploadThumbnail name="thumbnail" />

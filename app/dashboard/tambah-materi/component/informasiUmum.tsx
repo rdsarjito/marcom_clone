@@ -9,32 +9,28 @@ export default function InformasiUmum() {
       <CardContent className="p-6 space-y-6">
         <h3 className="text-lg font-semibold">Informasi Umum</h3>
 
-        <SelectField name="brand" label="Brand" options={[{ value: "brimo", label: "BRImo" }]} />
+        <SelectField name="brand" label="Brand" options={[{ value: "BRImo", label: "BRImo" }]} />
 
         <SelectField name="cluster" label="Cluster" options={[
-          { value: "cluster1", label: "Cluster 1" },
-          { value: "cluster2", label: "Cluster 2" },
+          { value: "Bayar-Bayar Harian", label: "Bayar-Bayar Harian" },
+          { value: "Bayar-bayar Bulanan", label: "Bayar-bayar Bulanan" },
         ]} />
 
         <SelectField name="fitur" label="Fitur" options={[
-          { value: "fitur1", label: "Fitur 1" },
-          { value: "fitur2", label: "Fitur 2" },
+          { value: "Donasi", label: "Donasi" },
+          { value: "QRIS Source CC", label: "QRIS Source CC" },
+          { value: "Transfer Internasional", label: "Transfer Internasional" },
         ]} />
 
         <InputField name="namaMateri" label="Nama Materi" placeholder="Masukkan nama materi" />
 
         <SelectField name="jenis" label="Jenis" options={[
-          { value: "jenis1", label: "Jenis 1" },
-          { value: "jenis2", label: "Jenis 2" },
+          { value: "Tematik", label: "Tematik" },
+          { value: "Tactical", label: "Tactical" },
         ]} />
 
         <DatePickerForm name="startDate" label="Pilih Tanggal Mulai" />
         <DatePickerForm name="endDate" label="Pilih Tanggal Berakhir" />
-
-        <SelectField name="periode" label="Periode" options={[
-          { value: "periode1", label: "Periode 1" },
-          { value: "periode2", label: "Periode 2" },
-        ]} />
       </CardContent>
     </Card>
   );

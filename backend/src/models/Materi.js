@@ -8,7 +8,6 @@ const MateriSchema = new mongoose.Schema({
   jenis: { type: String, required: false },
   startDate: { type: Date, required: false },
   endDate: { type: Date, required: false },
-  periode: { type: String, required: false },
   thumbnail: { type: String, required: false }, // File path thumbnail
   linkDokumen: { type: String, required: false }, // Link dokumen
   tipeMateri: { type: String, required: false }, // Tipe materi (misalnya pdf)
