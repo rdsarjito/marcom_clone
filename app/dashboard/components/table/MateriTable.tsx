@@ -3,9 +3,9 @@
 import { useEffect } from "react";
 import useMateriStore from "../../../../store/useMateriStore";
 import useFilterStore from "../../../../store/useFilterStore";
-import ReusableTable from "./reusableTable";
+import ReusableTable from "./ReusableTable";
 
-export default function MateriTabel() {
+export default function MateriTable() {
   const { data, loading, currentPage, itemsPerPage, fetchData, setCurrentPage } = useMateriStore();
   const { filters, searchQuery } = useFilterStore();
 

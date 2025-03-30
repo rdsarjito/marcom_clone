@@ -2,11 +2,11 @@
 
 import { useState } from "react"; // Import useState
 
-import FilterOption from "./components/filters/filterOption/filterOption";
-import DatePickerWithRange from "./components/filters/filterDate/filterDate";
-import MateriTabel from "./components/table/materiTabel";
+import FilterOption from "./components/filters/filterOption/FilterOption";
+import FilterDate from "./components/filters/filterDate/FilterDate";
+import MateriTabel from "./components/table/MateriTable";
 import { Switch } from "@/components/ui/switch";
-import StatsSection from "./components/stats/statsSection";
+import StatsSection from "./components/stats/StatsSection";
 
 export default function Page() {
   const [onlyVisualDocs, setOnlyVisualDocs] = useState(false); // Tambahkan state
@@ -15,7 +15,7 @@ export default function Page() {
     <main className="min-h-screen">
       {/* Filter tanggal */}
       <section className="pt-4 pr-4 pl-4">
-        <DatePickerWithRange />
+        <FilterDate />
       </section>
 
       {/* Kartu statistik */}

@@ -1,8 +1,8 @@
 import { Card, CardContent } from "@/components/ui/card";
 import SelectField from "../../uiRama/selectField";
 import InputField from "../../uiRama/inputField";
-import UploadThumbnail from "../component/uploadThumbnail";
-import { KeywordsInput } from "../component/keywordInput";
+import UploadThumbnail from "../component/UploadThumbnail";
+import { KeywordsInput } from "../component/KeywordsInput";
 import HorizontalLine from "../../uiRama/horizontalLine";
 import ButtonWithIcon from "../../uiRama/buttonWithIcon";
 import { Plus, Loader2 } from "lucide-react";

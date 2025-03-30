@@ -1,8 +1,8 @@
 import SelectField from "../../../uiRama/selectField";
-import { filterOptions, FilterKey } from "../../../../../constants/filterOptions";
+import { filterOptions, FilterKey } from "../../../../../constants/filter-options";
 
 type FilterGroupProps = {
-  selectedFilters: Record<FilterKey, string>;
+  selectedFilters: Partial<Record<FilterKey, string>>;
   handleFilterChange: (key: FilterKey, value: string) => void;
 };
 
