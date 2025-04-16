@@ -1,7 +1,7 @@
 import { Card, CardContent } from "@/components/ui/card";
 import SelectField from "../../uiRama/selectField";
 import InputField from "../../uiRama/inputField";
-import DatePickerForm from "../component/DatePickerForm";
+import DatePickerForm from "./DatePickerForm";
 
 export default function InformasiUmum() {
   return (

@@ -5,13 +5,23 @@ import Image from "next/image";
 import StatusBadge from "./StatusBadge";
 import { getImageUrl } from "@/lib/utils";
 
+import useMateriStore from "../../../../store/useMateriStore";
+
 interface MateriRowProps {
   materi: any;
 }
 
 const MateriRow: React.FC<MateriRowProps> = ({ materi }) => {
+  const highlightedId = useMateriStore((state) => state.highlightedId);
   return (
-    <TableRow key={materi._id}>
+    <TableRow 
+    key={materi._id}
+    className={
+      materi._id === highlightedId
+        ? "bg-green-100 transition-colors duration-500"
+        : ""
+    }
+    >
       <TableCell>{materi.brand}</TableCell>
       <TableCell>{materi.cluster}</TableCell>
       <TableCell>{materi.fitur}</TableCell>

@@ -21,15 +21,20 @@ interface MateriStore {
   loading: boolean;
   currentPage: number;
   itemsPerPage: number;
+  highlightedId: string | null; // <- ini untuk simpan ID yg akan di-highlight
   fetchData: () => Promise<void>;
   setCurrentPage: (page: number) => void;
+  setHighlightedId: (id: string | null) => void; // <- pastikan ini tipe function-nya
 }
+
 
 const useMateriStore = create<MateriStore>((set) => ({
   data: [],
   loading: true,
   currentPage: 1,
   itemsPerPage: 10,
+  highlightedId: null,
+  setHighlightedId: (id) => set({ highlightedId: id }),
 
   fetchData: async () => {
     set({ loading: true });
@@ -37,7 +42,8 @@ const useMateriStore = create<MateriStore>((set) => ({
       const response = await fetch("http://localhost:5000/api/materi");
       if (!response.ok) throw new Error("Gagal mengambil data");
       const result = await response.json();
-      set({ data: result, loading: false });
+      const reversed = result.reverse(); 
+      set({ data: reversed, loading: false });
     } catch (error) {
       console.error(error);
       set({ loading: false });
@@ -46,5 +52,6 @@ const useMateriStore = create<MateriStore>((set) => ({
 
   setCurrentPage: (page) => set({ currentPage: page }),
 }));
+
 
 export default useMateriStore;
