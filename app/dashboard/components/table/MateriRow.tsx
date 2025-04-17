@@ -18,17 +18,17 @@ interface MateriRowProps {
 const MateriRow: React.FC<MateriRowProps> = ({ materi }) => {
   const router = useRouter();
   const highlightedId = useMateriStore((state) => state.highlightedId);
-  const viewMateri = useMateriStore((state) => state.viewMateri);
+  const setSelectedMateri = useMateriStore((state) => state.setSelectedMateri);
 
-  const handleRowClick = (id: string) => {
-    viewMateri(id); 
-    router.push(`/dashboard/view-materi/${id}`);
+  const handleRowClick = () => {
+    setSelectedMateri(materi); 
+    router.push(`/dashboard/view-materi/${materi._id}`);
   };
 
   return (
     <TableRow
       key={materi._id}
-      onClick={() => handleRowClick(materi._id)}
+      onClick={() => handleRowClick()}
       className={`cursor-pointer ${
         materi._id === highlightedId ? "bg-green-100 transition-colors duration-500" : ""
       }`}

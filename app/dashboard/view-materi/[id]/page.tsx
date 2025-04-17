@@ -1,6 +1,5 @@
 "use client";
 
-import { useEffect } from "react";
 import { useParams } from "next/navigation";
 import useMateriStore from "@/store/useMateriStore";
 import Image from "next/image";
@@ -8,17 +7,13 @@ import { getImageUrl } from "@/lib/utils";
 
 export default function ViewMateri() {
   const { id } = useParams();
-  const { data, fetchData } = useMateriStore();
-  const materi = data.find((item) => item._id === id);
 
-  useEffect(() => {
-    if (!materi) {
-      fetchData();
-    }
-  }, [materi, fetchData]);
+  const selectedMateri = useMateriStore((state) => state.selectedMateri);
+
+  if (!selectedMateri) return <p>Materi tidak ditemukan</p>;
 
   if (!id) return <p className="text-center p-6">Memuat data materi...</p>;
-  if (!materi) return <p className="text-center p-6">Materi tidak ditemukan...</p>;
+  if (!selectedMateri) return <p className="text-center p-6">Materi tidak ditemukan...</p>;
 
   return (
     <div className="max-w-4xl mx-auto p-6 space-y-8">
@@ -30,31 +25,31 @@ export default function ViewMateri() {
       {/* Informasi Umum */}
       <section className="space-y-4">
         <h2 className="text-lg font-semibold">Informasi Umum</h2>
-        <Field label="Brand" value={materi.brand} />
-        <Field label="Cluster" value={materi.cluster} />
-        <Field label="Fitur" value={materi.fitur} />
-        <Field label="Nama Materi Komunikasi" value={materi.namaMateri} />
-        <Field label="Jenis" value={materi.jenis} />
+        <Field label="Brand" value={selectedMateri.brand} />
+        <Field label="Cluster" value={selectedMateri.cluster} />
+        <Field label="Fitur" value={selectedMateri.fitur} />
+        <Field label="Nama Materi Komunikasi" value={selectedMateri.namaMateri} />
+        <Field label="Jenis" value={selectedMateri.jenis} />
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <Field label="Pilih Tanggal Mulai" value={formatDate(materi.startDate)} />
-          <Field label="Pilih Tanggal Berakhir" value={formatDate(materi.endDate)} />
+          <Field label="Pilih Tanggal Mulai" value={formatDate(selectedMateri.startDate)} />
+          <Field label="Pilih Tanggal Berakhir" value={formatDate(selectedMateri.endDate)} />
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <Field label="Periode" value={getPeriode(materi.startDate, materi.endDate)} />
+          <Field label="Periode" value={getPeriode(selectedMateri.startDate, selectedMateri.endDate)} />
         </div>
       </section>
 
       {/* Dokumen Materi */}
       <section className="space-y-4">
         <h2 className="text-lg font-semibold">Dokumen Materi</h2>
-        <Field label="Input Link Dokumen Materi" value={materi.linkDokumen} isLink />
-        <Field label="Tipe Materi" value={materi.tipeMateri} />
+        <Field label="Input Link Dokumen Materi" value={selectedMateri.linkDokumen} isLink />
+        <Field label="Tipe Materi" value={selectedMateri.tipeMateri} />
 
         <div className="space-y-2">
           <p className="text-sm text-gray-600">Upload Thumbnail</p>
-          {materi.thumbnail && (
+          {selectedMateri.thumbnail && (
             <Image
-              src={getImageUrl(materi.thumbnail)}
+              src={getImageUrl(selectedMateri.thumbnail)}
               alt="Thumbnail"
               width={100}
               height={100}
@@ -63,9 +58,9 @@ export default function ViewMateri() {
           )}
         </div>
 
-        {materi.keywords?.length > 0 && (
+        {selectedMateri.keywords?.length > 0 && (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            {materi.keywords.slice(0, 3).map((keyword, idx) => (
+            {selectedMateri.keywords.slice(0, 3).map((keyword, idx) => (
               <Field key={idx} label={`Input Keyword ${idx + 1}`} value={keyword} />
             ))}
           </div>

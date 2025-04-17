@@ -26,6 +26,8 @@ interface MateriStore {
   setCurrentPage: (page: number) => void;
   setHighlightedId: (id: string | null) => void; 
   viewMateri: (id: string) => void;
+  selectedMateri: Materi | null;
+  setSelectedMateri: (materi: Materi) => void;
 }
 
 
@@ -53,6 +55,9 @@ const useMateriStore = create<MateriStore>((set) => ({
       set({ loading: false });
     }
   },
+
+  selectedMateri: null,
+  setSelectedMateri: (materi) => set({ selectedMateri: materi }),
 
   setCurrentPage: (page) => set({ currentPage: page }),
 }));
