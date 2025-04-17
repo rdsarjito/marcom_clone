@@ -3,8 +3,7 @@ import { getAllMateri, addMateri } from '../controllers/materiController.js';
 
 const router = express.Router();
 
-// POST route untuk menambah materi
 router.get("/", getAllMateri);
-router.post('/', addMateri);
+router.post("/", addMateri); // multer middleware dipindah ke app.js (upload.any)
 
 export default router;

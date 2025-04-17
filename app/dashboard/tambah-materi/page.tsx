@@ -5,7 +5,7 @@ import ConfirmDialog from "../uiRama/confirmDialog";
 import { useDocumentForm } from "../../../hooks/useDocumentForm";
 import InformasiUmum from "./component/InformasiUmum";
 import DokumenMateri from "./component/DokumenMateri";
-import FormFooter from "./component/FormFooter";
+import FormFooter from "../uiRama/FormFooter";
 
 export default function TambahMateri() {
   const { methods, handleSubmit, isLoading, isDialogOpen, setIsDialogOpen, onSubmit } = useDocumentForm();

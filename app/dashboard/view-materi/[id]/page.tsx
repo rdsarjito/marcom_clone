@@ -4,88 +4,92 @@ import { useParams } from "next/navigation";
 import useMateriStore from "@/store/useMateriStore";
 import Image from "next/image";
 import { getImageUrl } from "@/lib/utils";
+import { Card, CardContent } from "@/components/ui/card";
+import { Key } from "react";
+
+import FormFooter from "@/app/dashboard/uiRama/FormFooter";
 
 export default function ViewMateri() {
   const { id } = useParams();
-
   const selectedMateri = useMateriStore((state) => state.selectedMateri);
-
-  if (!selectedMateri) return <p>Materi tidak ditemukan</p>;
+  const dokumenMateri = (selectedMateri as any)?.dokumenMateri || [];
 
   if (!id) return <p className="text-center p-6">Memuat data materi...</p>;
   if (!selectedMateri) return <p className="text-center p-6">Materi tidak ditemukan...</p>;
 
   return (
-    <div className="max-w-4xl mx-auto p-6 space-y-8">
+    <div>
+    <div className="max-w-2xl mx-auto p-6 space-y-8">
+      {/* Header */}
       <div className="text-center space-y-1">
-        <p className="text-sm text-blue-600 font-medium underline">Detail Materi Komunikasi</p>
-        <h1 className="text-2xl font-bold">Launch Fitur QRIS Source CC</h1>
+      <h2 className="text-sm font-semibold text-[#0078D4]">Detail Materi Komuniasi</h2>
+      <h1 className="text-2xl font-semibold">{selectedMateri.namaMateri}</h1>
       </div>
 
-      {/* Informasi Umum */}
-      <section className="space-y-4">
-        <h2 className="text-lg font-semibold">Informasi Umum</h2>
-        <Field label="Brand" value={selectedMateri.brand} />
-        <Field label="Cluster" value={selectedMateri.cluster} />
-        <Field label="Fitur" value={selectedMateri.fitur} />
-        <Field label="Nama Materi Komunikasi" value={selectedMateri.namaMateri} />
-        <Field label="Jenis" value={selectedMateri.jenis} />
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      {/* Informasi Umum dalam Card */}
+      <Card>
+        <CardContent className="p-6 space-y-6">
+          <h3 className="text-lg font-semibold text-gray-800">Informasi Umum</h3>
+
+          <Field label="Brand" value={selectedMateri.brand} />
+          <Field label="Cluster" value={selectedMateri.cluster} />
+          <Field label="Fitur" value={selectedMateri.fitur} />
+          <Field label="Nama Materi Komunikasi" value={selectedMateri.namaMateri} />
+          <Field label="Jenis" value={selectedMateri.jenis} />
           <Field label="Pilih Tanggal Mulai" value={formatDate(selectedMateri.startDate)} />
-          <Field label="Pilih Tanggal Berakhir" value={formatDate(selectedMateri.endDate)} />
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <Field label="Periode" value={getPeriode(selectedMateri.startDate, selectedMateri.endDate)} />
-        </div>
-      </section>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <Field label="Periode" value={getPeriode(selectedMateri.startDate, selectedMateri.endDate)} />
+            <Field label="Pilih Tanggal Berakhir" value={formatDate(selectedMateri.endDate)} />
+          </div>
+        </CardContent>
+      </Card>
 
       {/* Dokumen Materi */}
-      <section className="space-y-4">
+      <section className="space-y-6">
         <h2 className="text-lg font-semibold">Dokumen Materi</h2>
-        <Field label="Input Link Dokumen Materi" value={selectedMateri.linkDokumen} isLink />
-        <Field label="Tipe Materi" value={selectedMateri.tipeMateri} />
-
-        <div className="space-y-2">
-          <p className="text-sm text-gray-600">Upload Thumbnail</p>
-          {selectedMateri.thumbnail && (
-            <Image
-              src={getImageUrl(selectedMateri.thumbnail)}
-              alt="Thumbnail"
-              width={100}
-              height={100}
-              className="rounded-md"
-            />
-          )}
-        </div>
-
-        {selectedMateri.keywords?.length > 0 && (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            {selectedMateri.keywords.slice(0, 3).map((keyword, idx) => (
-              <Field key={idx} label={`Input Keyword ${idx + 1}`} value={keyword} />
-            ))}
-          </div>
-        )}
-
+        {dokumenMateri.map((dokumen: {
+          _id: Key | null;
+          tipeMateri: string;
+          linkDokumen: string;
+          thumbnail: string;
+          keywords: string[];
+        }, index: number) => (
+          <Card key={dokumen._id}>
+            <CardContent className="p-6 space-y-4">
+              <Field label={`Tipe Materi #${index + 1}`} value={dokumen.tipeMateri} />
+              <Field label="Link Dokumen" value={dokumen.linkDokumen} isLink />
+              {dokumen.thumbnail && (
+                <div>
+                  <p className="text-sm text-gray-600">Thumbnail</p>
+                  <Image
+                    src={getImageUrl(dokumen.thumbnail)}
+                    alt={`Thumbnail ${index + 1}`}
+                    width={100}
+                    height={100}
+                    className="rounded-md"
+                  />
+                </div>
+              )}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                {dokumen.keywords.map((keyword, idx) => (
+                  <Field key={idx} label={`Keyword ${idx + 1}`} value={keyword} />
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        ))}
       </section>
-      <div className="sticky bottom-0 bg-blue-50 border-t border-gray-200 p-4 mt-10 flex justify-end gap-4">
-  <button
-    onClick={() => window.location.href = "/materi"} // Ganti URL sesuai rute tabel kamu
-    className="px-4 py-2 border border-black text-black rounded-md hover:bg-gray-100 transition"
-  >
-    Kembali ke Tabel
-  </button>
 
-  <button
-    onClick={() => window.location.href = `/materi/edit/${id}`} // Ganti sesuai rute edit kamu
-    className="px-4 py-2 bg-[#0f172a] text-white rounded-md flex items-center gap-2 hover:bg-[#1e293b] transition"
-  >
-    <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536M9 13l6.536-6.536a2 2 0 112.828 2.828L11.828 15.828a2 2 0 01-1.414.586H7v-3.414a2 2 0 01.586-1.414z" />
-    </svg>
-    Edit Materi Komunikasi
-  </button>
-</div>
+
+
+
     </div>
+          <FormFooter
+          onCancel={() => (window.location.href = "/materi")}
+          onPrimaryClick={() => (window.location.href = `/materi/edit/${id}`)}
+          primaryLabel="Edit Materi Komunikasi"
+        />
+        </div>
   );
 }
 
@@ -101,7 +105,7 @@ function Field({
   return (
     <div className="flex flex-col space-y-1">
       <label className="text-sm text-gray-600">{label}</label>
-      <div className="bg-gray-100 text-sm px-4 py-2 rounded-md">
+      <div className="bg-gray-100 text-sm px-4 py-2 rounded-md break-words">
         {isLink ? (
           <a href={value} target="_blank" rel="noopener noreferrer" className="text-blue-600 underline">
             {value}

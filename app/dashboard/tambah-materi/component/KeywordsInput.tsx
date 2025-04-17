@@ -4,33 +4,26 @@ import InputField from "../../uiRama/inputField";
 import { PlusCircle } from "lucide-react";
 import ButtonWithIcon from "../../uiRama/buttonWithIcon";
 
-export function KeywordsInput() {
+interface KeywordsInputProps {
+  baseName: string;
+}
+
+export function KeywordsInput({ baseName }: KeywordsInputProps) {
   const { getValues, setValue, watch } = useFormContext();
-
-  const [initialized, setInitialized] = useState(false);
-  
-  const keywords: string[] = watch("keywords", []);
-
-  useEffect(() => {
-    if (!initialized && keywords.length < 3) {
-      setValue("keywords", ["", "", ""]);
-      setInitialized(true);
-    }
-  }, [initialized, keywords.length, setValue]);
+  const keywords: string[] = watch(baseName, []);
 
   const addKeyword = () => {
-    setValue("keywords", [...getValues("keywords"), ""]);
+    setValue(baseName, [...getValues(baseName), ""]);
   };
 
   return (
     <div className="space-y-4">
       {keywords.map((_, index) => (
-        <div key={index}>
-          <InputField
-            name={`keywords.${index}`}
-            label={`Keyword ${index + 1}`}
-          />
-        </div>
+        <InputField
+          key={index}
+          name={`${baseName}.${index}`}
+          label={`Keyword ${index + 1}`}
+        />
       ))}
 
       <ButtonWithIcon

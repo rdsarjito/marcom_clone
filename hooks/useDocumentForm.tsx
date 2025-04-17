@@ -7,6 +7,7 @@ import useMateriStore from "@/store/useMateriStore";
 
 import { useToast } from "@/hooks/use-toast";
 import { formSchema, FormDataType } from "@/lib/validation";
+import { convertFormData } from "@/lib/utils"; // Impor fungsi convertFormData
 import { CheckCircle } from "lucide-react";
 
 export function useDocumentForm() {
@@ -19,12 +20,21 @@ export function useDocumentForm() {
   const methods = useForm<FormDataType>({
     resolver: zodResolver(formSchema),
     defaultValues: {
+      brand: "",
+      cluster: "",
+      fitur: "",
+      namaMateri: "",
+      jenis: "",
       startDate: undefined,
       endDate: undefined,
-      linkDokumen: "",
-      tipeMateri: undefined,
-      keywords: [],
-      thumbnail: undefined,
+      dokumenMateri: [
+        {
+          linkDokumen: "",
+          tipeMateri: "",
+          thumbnail: undefined,
+          keywords: [""],
+        },
+      ],
     },
   });
 
@@ -33,33 +43,26 @@ export function useDocumentForm() {
   const onSubmit = async (data: FormDataType) => {
     setIsLoading(true);
     setIsDialogOpen(false);
-  
+
     try {
-      const formData = new FormData();
-      Object.entries(data).forEach(([key, value]) => {
-        if (value instanceof File) {
-          formData.append(key, value);
-        } else {
-          formData.append(key, String(value));
-        }
-      });
-  
+      // Konversi data menjadi FormData
+      const formData = convertFormData(data);
+      console.log("Form Data:", formData);
+
       const response = await fetch("http://localhost:5000/api/materi", {
         method: "POST",
         body: formData,
       });
-  
+
       if (!response.ok) throw new Error("Gagal mengirim data");
-  
+
       const newData = await response.json(); // asumsinya backend return data baru
       useMateriStore.getState().setHighlightedId(newData._id); // set highlight
-  
-      // hilangkan highlight setelah 3 detik
+
       setTimeout(() => {
         useMateriStore.getState().setHighlightedId(null);
-      }, 3000);
-  
-      // toast + redirect
+      }, 10000);
+
       toast({
         description: (
           <div className="flex flex-col gap-1">
@@ -72,7 +75,7 @@ export function useDocumentForm() {
         ),
         className: "bg-green-100 border border-green-300 shadow-md rounded-lg",
       });
-  
+
       reset();
       router.push("/dashboard");
     } catch (error) {

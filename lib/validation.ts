@@ -1,19 +1,22 @@
+// lib/validation.ts
 import { z } from "zod";
 
 export const formSchema = z.object({
-  brand: z.string().min(1, "Brand harus dipilih"),
-  cluster: z.string().min(1, "Cluster harus dipilih"),
-  fitur: z.string().min(1, "Fitur harus dipilih"),
-  namaMateri: z.string().min(1, "Nama materi harus diisi"),
-  jenis: z.string().min(1, "Jenis harus dipilih"),
-  startDate: z.date({ required_error: "Tanggal mulai harus dipilih" }),
-  endDate: z.date({ required_error: "Tanggal berakhir harus dipilih" }),
-  linkDokumen: z.string().url({ message: "Masukkan URL yang valid" }),
-  tipeMateri: z.enum(["Key Visual", "TVC", "Video"], {
-    message: "Pilih tipe materi yang valid",
-  }),
-  keywords: z.array(z.string().min(1, "Keyword tidak boleh kosong")),
-  thumbnail: z.instanceof(File).optional(),
+  brand: z.string(),
+  cluster: z.string(),
+  fitur: z.string(),
+  namaMateri: z.string(),
+  jenis: z.string(),
+  startDate: z.date(),
+  endDate: z.date(),
+  dokumenMateri: z.array(
+    z.object({
+      linkDokumen: z.string().url({ message: "Link tidak valid" }),
+      tipeMateri: z.string(),
+      thumbnail: z.any(), // bisa ditambahkan validasi file jika perlu
+      keywords: z.array(z.string().min(1)).min(1),
+    })
+  ),
 });
 
 export type FormDataType = z.infer<typeof formSchema>;
