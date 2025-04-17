@@ -21,10 +21,11 @@ interface MateriStore {
   loading: boolean;
   currentPage: number;
   itemsPerPage: number;
-  highlightedId: string | null; // <- ini untuk simpan ID yg akan di-highlight
+  highlightedId: string | null; 
   fetchData: () => Promise<void>;
   setCurrentPage: (page: number) => void;
-  setHighlightedId: (id: string | null) => void; // <- pastikan ini tipe function-nya
+  setHighlightedId: (id: string | null) => void; 
+  viewMateri: (id: string) => void;
 }
 
 
@@ -35,6 +36,9 @@ const useMateriStore = create<MateriStore>((set) => ({
   itemsPerPage: 10,
   highlightedId: null,
   setHighlightedId: (id) => set({ highlightedId: id }),
+  viewMateri: (id) => {
+    set({ highlightedId: id });
+  },
 
   fetchData: async () => {
     set({ loading: true });

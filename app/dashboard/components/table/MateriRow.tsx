@@ -1,9 +1,13 @@
+"use client";
+
 import { TableRow, TableCell } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { format } from "date-fns";
 import Image from "next/image";
 import StatusBadge from "./StatusBadge";
 import { getImageUrl } from "@/lib/utils";
+
+import { useRouter } from "next/navigation";
 
 import useMateriStore from "../../../../store/useMateriStore";
 
@@ -12,15 +16,22 @@ interface MateriRowProps {
 }
 
 const MateriRow: React.FC<MateriRowProps> = ({ materi }) => {
+  const router = useRouter();
   const highlightedId = useMateriStore((state) => state.highlightedId);
+  const viewMateri = useMateriStore((state) => state.viewMateri);
+
+  const handleRowClick = (id: string) => {
+    viewMateri(id); 
+    router.push(`/dashboard/view-materi/${id}`);
+  };
+
   return (
-    <TableRow 
-    key={materi._id}
-    className={
-      materi._id === highlightedId
-        ? "bg-green-100 transition-colors duration-500"
-        : ""
-    }
+    <TableRow
+      key={materi._id}
+      onClick={() => handleRowClick(materi._id)}
+      className={`cursor-pointer ${
+        materi._id === highlightedId ? "bg-green-100 transition-colors duration-500" : ""
+      }`}
     >
       <TableCell>{materi.brand}</TableCell>
       <TableCell>{materi.cluster}</TableCell>
@@ -44,12 +55,16 @@ const MateriRow: React.FC<MateriRowProps> = ({ materi }) => {
         </div>
       </TableCell>
       <TableCell>{materi.tipeMateri}</TableCell>
-      <TableCell><StatusBadge startDate={materi.startDate} endDate={materi.endDate} /></TableCell>
+      <TableCell>
+        <StatusBadge startDate={materi.startDate} endDate={materi.endDate} />
+      </TableCell>
       <TableCell>{materi.jenis}</TableCell>
       <TableCell>
         {format(new Date(materi.startDate), "yyyy-MM-dd")} - {format(new Date(materi.endDate), "yyyy-MM-dd")}
       </TableCell>
-      <TableCell>{Array.isArray(materi.keywords) ? materi.keywords.join(", ") : "-"}</TableCell>
+      <TableCell>
+        {Array.isArray(materi.keywords) ? materi.keywords.join(", ") : "-"}
+      </TableCell>
     </TableRow>
   );
 };

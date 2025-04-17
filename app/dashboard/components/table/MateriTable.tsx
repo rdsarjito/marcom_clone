@@ -10,6 +10,7 @@ import { Progress } from "@/components/ui/progress";
 export default function MateriTable() {
   const { loading, currentPage, itemsPerPage, fetchData, setCurrentPage } = useMateriStore();
   const filteredData = useFilteredMateri();
+  
 
   useEffect(() => {
     fetchData();
