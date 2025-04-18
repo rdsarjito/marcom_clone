@@ -7,8 +7,8 @@ export const formSchema = z.object({
   fitur: z.string(),
   namaMateri: z.string(),
   jenis: z.string(),
-  startDate: z.date(),
-  endDate: z.date(),
+  startDate: z.string(),
+  endDate: z.string(),
   dokumenMateri: z.array(
     z.object({
       linkDokumen: z.string().url({ message: "Link tidak valid" }),

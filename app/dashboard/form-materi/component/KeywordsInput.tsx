@@ -1,3 +1,5 @@
+"use client"
+
 import { useState, useEffect } from "react";
 import { useFormContext } from "react-hook-form";
 import InputField from "../../uiRama/inputField";
@@ -6,13 +8,15 @@ import ButtonWithIcon from "../../uiRama/buttonWithIcon";
 
 interface KeywordsInputProps {
   baseName: string;
+  readOnly?: boolean; // Menambahkan properti readOnly
 }
 
-export function KeywordsInput({ baseName }: KeywordsInputProps) {
+export function KeywordsInput({ baseName, readOnly = false }: KeywordsInputProps) {
   const { getValues, setValue, watch } = useFormContext();
   const keywords: string[] = watch(baseName, []);
 
   const addKeyword = () => {
+    if (readOnly) return; // Jika readOnly, tidak izinkan penambahan keyword
     setValue(baseName, [...getValues(baseName), ""]);
   };
 
@@ -23,15 +27,18 @@ export function KeywordsInput({ baseName }: KeywordsInputProps) {
           key={index}
           name={`${baseName}.${index}`}
           label={`Keyword ${index + 1}`}
+          readOnly={readOnly} // Mengirim readOnly ke InputField
         />
       ))}
 
-      <ButtonWithIcon
-        icon={PlusCircle}
-        label="Tambah Keyword"
-        onClick={addKeyword}
-        className="border border-gray-300 text-gray-700 hover:bg-gray-100"
-      />
+      {!readOnly && (
+        <ButtonWithIcon
+          icon={PlusCircle}
+          label="Tambah Keyword"
+          onClick={addKeyword}
+          className="border border-gray-300 text-gray-700 hover:bg-gray-100"
+        />
+      )}
     </div>
   );
 }

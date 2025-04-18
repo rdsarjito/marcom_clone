@@ -1,3 +1,5 @@
+"use client";
+
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
@@ -10,7 +12,7 @@ import { formSchema, FormDataType } from "@/lib/validation";
 import { convertFormData } from "@/lib/utils"; // Impor fungsi convertFormData
 import { CheckCircle } from "lucide-react";
 
-export function useDocumentForm() {
+export function useDocumentForm(defaultValues?: Partial<FormDataType>) {
   const router = useRouter();
   const { toast } = useToast();
 
@@ -19,14 +21,14 @@ export function useDocumentForm() {
 
   const methods = useForm<FormDataType>({
     resolver: zodResolver(formSchema),
-    defaultValues: {
+    defaultValues: defaultValues || {
       brand: "",
       cluster: "",
       fitur: "",
       namaMateri: "",
       jenis: "",
-      startDate: undefined,
-      endDate: undefined,
+      startDate: "",
+      endDate: "",
       dokumenMateri: [
         {
           linkDokumen: "",
@@ -45,7 +47,6 @@ export function useDocumentForm() {
     setIsDialogOpen(false);
 
     try {
-      // Konversi data menjadi FormData
       const formData = convertFormData(data);
       console.log("Form Data:", formData);
 
@@ -56,8 +57,8 @@ export function useDocumentForm() {
 
       if (!response.ok) throw new Error("Gagal mengirim data");
 
-      const newData = await response.json(); // asumsinya backend return data baru
-      useMateriStore.getState().setHighlightedId(newData._id); // set highlight
+      const newData = await response.json();
+      useMateriStore.getState().setHighlightedId(newData._id);
 
       setTimeout(() => {
         useMateriStore.getState().setHighlightedId(null);

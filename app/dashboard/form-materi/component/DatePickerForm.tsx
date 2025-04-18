@@ -1,3 +1,5 @@
+"use client";
+
 import { useFormContext } from "react-hook-form";
 import { useState } from "react";
 import { format } from "date-fns";
@@ -12,17 +14,21 @@ import "react-day-picker/dist/style.css";
 interface DatePickerProps {
   name: string;
   label: string;
+  readOnly?: boolean;  // Menambahkan properti readOnly
 }
 
-export default function DatePickerForm({ name, label }: DatePickerProps) {
+export default function DatePickerForm({ name, label, readOnly = false }: DatePickerProps) {
   const { setValue, watch, formState: { errors } } = useFormContext();
   const selectedDate = watch(name);
-  const [date, setDate] = useState<Date | null>(selectedDate || null);
+  
+  // Jika selectedDate bukan null, kita pastikan ini adalah objek Date yang valid
+  const [date, setDate] = useState<Date | null>(selectedDate instanceof Date ? selectedDate : null);
 
   const handleSelect = (date: Date | undefined) => {
     if (date) {
       setDate(date);
-      setValue(name, date, { shouldValidate: true });
+      // Pastikan kita mengirimkan string format tanggal saat menyetel nilai
+      setValue(name, format(date, "yyyy-MM-dd"), { shouldValidate: true });
     }
   };
 
@@ -31,14 +37,20 @@ export default function DatePickerForm({ name, label }: DatePickerProps) {
       <Label>{label}</Label>
       <Popover>
         <PopoverTrigger asChild>
-          <Button variant="outline" className="w-full flex justify-between">
+          <Button
+            variant="outline"
+            className="w-full flex justify-between"
+            disabled={readOnly}  // Menonaktifkan tombol jika readOnly
+          >
             {date ? format(date, "dd/MM/yyyy") : "Pilih tanggal"}
             <CalendarIcon className="ml-2 h-4 w-4" />
           </Button>
         </PopoverTrigger>
-        <PopoverContent align="start">
-          <DayPicker mode="single" selected={date ?? undefined} onSelect={handleSelect} />
-        </PopoverContent>
+        {!readOnly && (  // Hanya menampilkan DayPicker jika tidak readOnly
+          <PopoverContent align="start">
+            <DayPicker mode="single" selected={date ?? undefined} onSelect={handleSelect} />
+          </PopoverContent>
+        )}
       </Popover>
       {errors[name] && <p className="text-red-500">{errors[name]?.message as string}</p>}
     </div>

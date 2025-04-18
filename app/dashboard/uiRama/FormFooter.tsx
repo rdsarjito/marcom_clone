@@ -1,6 +1,7 @@
+"use client"
+
 // component/FormFooter.tsx
 import { Button } from "@/components/ui/button";
-import { useRouter } from "next/navigation";
 
 interface FormFooterProps {
   isLoading?: boolean;
@@ -30,7 +31,7 @@ export default function FormFooter({
 
       {showPrimary && (
         <Button
-          type="button"
+          type="submit"
           className="bg-[#0b132b] text-white hover:bg-[#1c2541] min-w-[120px]"
           disabled={isLoading}
           onClick={onPrimaryClick}

@@ -9,20 +9,33 @@ interface ReusableSelectProps {
   options: { value: string; label: string }[];
   value?: string;
   onChange?: (value: string) => void;
+  readOnly?: boolean; // Menambahkan properti readOnly
 }
 
-export default function SelectField({ name, label, options, value, onChange }: ReusableSelectProps) {
+export default function SelectField({
+  name,
+  label,
+  options,
+  value,
+  onChange,
+  readOnly = false, // Default readOnly false
+}: ReusableSelectProps) {
   const form = useFormContext();
   const isForm = !!form && name;
+
+  const handleChange = (val: string) => {
+    if (!readOnly) {
+      if (isForm) form.setValue(name!, val);
+      if (onChange) onChange(val);
+    }
+  };
 
   return (
     <div className="space-y-2">
       <Select
-        onValueChange={(val) => {
-          if (isForm) form.setValue(name!, val);
-          if (onChange) onChange(val);
-        }}
+        onValueChange={handleChange}
         value={isForm ? form.watch(name!) : value}
+        disabled={readOnly} // Menonaktifkan Select jika readOnly
       >
         <SelectTrigger className="text-gray-600">
           <SelectValue 
