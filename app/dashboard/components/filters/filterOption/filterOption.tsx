@@ -4,8 +4,8 @@ import { useRouter } from "next/navigation";
 import { useFilterStore } from "@/store/useFilterStore";
 import useSelectedFilters from "@/hooks/useSelectedFilters";
 import HorizontalLine from "../../../uiRama/horizontalLine";
-import FilterGroup from "./FilterGroup";
-import SearchAndActions from "./SearchAndActions";
+import FilterGroup from "./filterGroup";
+import SearchAndActions from "./searchAndActions";
 
 export default function FilterOption() {
   const { applyFilters, setSearchQuery } = useFilterStore();
