@@ -8,6 +8,7 @@ const MateriSchema = new mongoose.Schema({
   jenis: { type: String },
   startDate: { type: Date },
   endDate: { type: Date },
+  periode: { type: String },
   dokumenMateri: [
     {
       linkDokumen: { type: String },

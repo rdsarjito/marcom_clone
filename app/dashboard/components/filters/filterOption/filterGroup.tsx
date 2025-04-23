@@ -18,6 +18,7 @@ const FilterGroup = ({ selectedFilters, handleFilterChange }: FilterGroupProps) 
             value={selectedFilters[key as FilterKey] || ""}
             onChange={(value) => handleFilterChange(key as FilterKey, value)}
             options={options.map((opt) => ({ value: opt, label: opt }))}
+            showLabel={false}
           />
         ))}
       </div>

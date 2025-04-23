@@ -14,20 +14,25 @@ import "react-day-picker/dist/style.css";
 interface DatePickerProps {
   name: string;
   label: string;
-  readOnly?: boolean;  // Menambahkan properti readOnly
+  readOnly?: boolean; 
 }
 
 export default function DatePickerForm({ name, label, readOnly = false }: DatePickerProps) {
   const { setValue, watch, formState: { errors } } = useFormContext();
   const selectedDate = watch(name);
-  
-  // Jika selectedDate bukan null, kita pastikan ini adalah objek Date yang valid
-  const [date, setDate] = useState<Date | null>(selectedDate instanceof Date ? selectedDate : null);
+
+  const [date, setDate] = useState<Date | null>(() => {
+    if (selectedDate instanceof Date) return selectedDate;
+    if (typeof selectedDate === "string") {
+      const parsed = new Date(selectedDate);
+      return isNaN(parsed.getTime()) ? null : parsed;
+    }
+    return null;
+  });
 
   const handleSelect = (date: Date | undefined) => {
     if (date) {
       setDate(date);
-      // Pastikan kita mengirimkan string format tanggal saat menyetel nilai
       setValue(name, format(date, "yyyy-MM-dd"), { shouldValidate: true });
     }
   };
@@ -40,13 +45,13 @@ export default function DatePickerForm({ name, label, readOnly = false }: DatePi
           <Button
             variant="outline"
             className="w-full flex justify-between"
-            disabled={readOnly}  // Menonaktifkan tombol jika readOnly
+            disabled={readOnly}  
           >
             {date ? format(date, "dd/MM/yyyy") : "Pilih tanggal"}
             <CalendarIcon className="ml-2 h-4 w-4" />
           </Button>
         </PopoverTrigger>
-        {!readOnly && (  // Hanya menampilkan DayPicker jika tidak readOnly
+        {!readOnly && (  
           <PopoverContent align="start">
             <DayPicker mode="single" selected={date ?? undefined} onSelect={handleSelect} />
           </PopoverContent>

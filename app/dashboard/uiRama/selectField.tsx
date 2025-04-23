@@ -2,6 +2,7 @@
 
 import { Select, SelectTrigger, SelectContent, SelectItem, SelectValue } from "@/components/ui/select";
 import { useFormContext } from "react-hook-form";
+import { Label } from "@/components/ui/label";
 
 interface ReusableSelectProps {
   name?: string;
@@ -9,7 +10,8 @@ interface ReusableSelectProps {
   options: { value: string; label: string }[];
   value?: string;
   onChange?: (value: string) => void;
-  readOnly?: boolean; // Menambahkan properti readOnly
+  readOnly?: boolean;
+  showLabel?: boolean;
 }
 
 export default function SelectField({
@@ -18,7 +20,8 @@ export default function SelectField({
   options,
   value,
   onChange,
-  readOnly = false, // Default readOnly false
+  readOnly = false,
+  showLabel = true,
 }: ReusableSelectProps) {
   const form = useFormContext();
   const isForm = !!form && name;
@@ -32,10 +35,11 @@ export default function SelectField({
 
   return (
     <div className="space-y-2">
+      {showLabel && label && <Label>{label}</Label>}
       <Select
         onValueChange={handleChange}
         value={isForm ? form.watch(name!) : value}
-        disabled={readOnly} // Menonaktifkan Select jika readOnly
+        disabled={readOnly} 
       >
         <SelectTrigger className="text-gray-600">
           <SelectValue 

@@ -16,6 +16,9 @@ export function useDocumentForm(defaultValues?: Partial<FormDataType>) {
   const router = useRouter();
   const { toast } = useToast();
 
+  const selectedMateri = useMateriStore((state) => state.selectedMateri); // ambil dari store
+  const fetchData = useMateriStore((state) => state.fetchData); // buat refresh data setelah update
+
   const [isLoading, setIsLoading] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
@@ -47,31 +50,47 @@ export function useDocumentForm(defaultValues?: Partial<FormDataType>) {
     setIsDialogOpen(false);
 
     try {
-      const formData = convertFormData(data);
-      console.log("Form Data:", formData);
+      const periode =
+        new Date(data.endDate).getFullYear() - new Date(data.startDate).getFullYear();
+      const dataWithPeriode = { ...data, periode };
 
-      const response = await fetch("http://localhost:5000/api/materi", {
-        method: "POST",
+
+      console.log(dataWithPeriode);
+      const formData = convertFormData(dataWithPeriode);
+
+      const isEditMode = !!selectedMateri;
+      const url = isEditMode
+        ? `http://localhost:5000/api/materi/${selectedMateri?._id}`
+        : "http://localhost:5000/api/materi";
+      const method = isEditMode ? "PUT" : "POST";
+
+      const response = await fetch(url, {
+        method,
         body: formData,
       });
 
-      if (!response.ok) throw new Error("Gagal mengirim data");
+      if (!response.ok) throw new Error("Gagal menyimpan data");
 
-      const newData = await response.json();
-      useMateriStore.getState().setHighlightedId(newData._id);
+      const result = await response.json();
+
+      useMateriStore.getState().setHighlightedId(result._id);
 
       setTimeout(() => {
         useMateriStore.getState().setHighlightedId(null);
-      }, 10000);
+      }, 5000);
+
+      await fetchData();
 
       toast({
         description: (
           <div className="flex flex-col gap-1">
             <div className="flex items-center gap-2 text-green-800 font-semibold">
               <CheckCircle className="h-4 w-4 text-green-600" />
-              <span>Data berhasil disimpan</span>
+              <span>Data berhasil {isEditMode ? "diperbarui" : "disimpan"}</span>
             </div>
-            <span className="text-green-800">Materi komunikasi berhasil tersimpan</span>
+            <span className="text-green-800">
+              Materi komunikasi berhasil {isEditMode ? "diupdate" : "ditambahkan"}
+            </span>
           </div>
         ),
         className: "bg-green-100 border border-green-300 shadow-md rounded-lg",

@@ -8,7 +8,7 @@ import ButtonWithIcon from "../../uiRama/buttonWithIcon";
 
 interface KeywordsInputProps {
   baseName: string;
-  readOnly?: boolean; // Menambahkan properti readOnly
+  readOnly?: boolean;
 }
 
 export function KeywordsInput({ baseName, readOnly = false }: KeywordsInputProps) {
@@ -16,7 +16,7 @@ export function KeywordsInput({ baseName, readOnly = false }: KeywordsInputProps
   const keywords: string[] = watch(baseName, []);
 
   const addKeyword = () => {
-    if (readOnly) return; // Jika readOnly, tidak izinkan penambahan keyword
+    if (readOnly) return;
     setValue(baseName, [...getValues(baseName), ""]);
   };
 
@@ -27,7 +27,7 @@ export function KeywordsInput({ baseName, readOnly = false }: KeywordsInputProps
           key={index}
           name={`${baseName}.${index}`}
           label={`Keyword ${index + 1}`}
-          readOnly={readOnly} // Mengirim readOnly ke InputField
+          readOnly={readOnly} 
         />
       ))}
 

@@ -23,7 +23,7 @@ const MateriRow: React.FC<MateriRowProps> = ({ materi }) => {
 
   const handleRowClick = () => {
     setSelectedMateri(materi); 
-    router.push(`/dashboard/form-materi/${materi._id}`);
+    router.push(`/dashboard/form-materi/${materi._id}?mode=view`);
   };
 
   return (

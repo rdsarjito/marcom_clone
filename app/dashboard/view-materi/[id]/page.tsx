@@ -7,7 +7,7 @@ import { getImageUrl } from "@/lib/utils";
 import { Card, CardContent } from "@/components/ui/card";
 import { Key } from "react";
 
-import FormFooter from "@/app/dashboard/uiRama/FormFooter";
+import FormFooter from "@/app/dashboard/form-materi/components/FormFooter";
 
 export default function ViewMateri() {
   const { id } = useParams();

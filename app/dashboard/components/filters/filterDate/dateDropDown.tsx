@@ -4,14 +4,22 @@ import { ChevronDownIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { PresetDate } from "../../../../../constants/preset-date";
+import useFilterStore from "@/store/useFilterStore";
 
 interface DateDropdownProps {
   dateRange?: { from: Date; to: Date };
   isCustomRange: boolean;
-  handlePresetSelection: (preset: PresetDate) => void;
+  handlePresetSelection: (preset: string) => void; 
 }
 
 const DateDropdown: React.FC<DateDropdownProps> = ({ dateRange, isCustomRange, handlePresetSelection }) => {
+  const { setSelectedPreset } = useFilterStore();
+
+  const handlePresetClick = (preset: string) => {
+    setSelectedPreset(preset);
+    handlePresetSelection(preset); 
+  };
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -32,7 +40,7 @@ const DateDropdown: React.FC<DateDropdownProps> = ({ dateRange, isCustomRange, h
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-[260px]">
         {Object.values(PresetDate).map((preset) => (
-          <DropdownMenuItem key={preset} onClick={() => handlePresetSelection(preset)}>
+          <DropdownMenuItem key={preset} onClick={() => handlePresetClick(preset)}>
             {preset}
           </DropdownMenuItem>
         ))}

@@ -4,7 +4,7 @@ import InputField from "../../uiRama/inputField";
 import DatePickerForm from "./DatePickerForm";
 
 interface InformasiUmumProps {
-  readOnly?: boolean;  // Menambahkan readOnly sebagai properti
+  readOnly?: boolean;  
 }
 
 export default function InformasiUmum({ readOnly = true }: InformasiUmumProps) {
@@ -17,7 +17,7 @@ export default function InformasiUmum({ readOnly = true }: InformasiUmumProps) {
           name="brand"
           label="Brand"
           options={[{ value: "BRImo", label: "BRImo" }]}
-          readOnly={readOnly}  // Menambahkan readOnly pada SelectField
+          readOnly={readOnly}
         />
 
         <SelectField
@@ -27,7 +27,7 @@ export default function InformasiUmum({ readOnly = true }: InformasiUmumProps) {
             { value: "Bayar-Bayar Harian", label: "Bayar-Bayar Harian" },
             { value: "Bayar-bayar Bulanan", label: "Bayar-bayar Bulanan" },
           ]}
-          readOnly={readOnly}  // Menambahkan readOnly pada SelectField
+          readOnly={readOnly} 
         />
 
         <SelectField
@@ -38,14 +38,14 @@ export default function InformasiUmum({ readOnly = true }: InformasiUmumProps) {
             { value: "QRIS Source CC", label: "QRIS Source CC" },
             { value: "Transfer Internasional", label: "Transfer Internasional" },
           ]}
-          readOnly={readOnly}  // Menambahkan readOnly pada SelectField
+          readOnly={readOnly}
         />
 
         <InputField
           name="namaMateri"
           label="Nama Materi"
           placeholder="Masukkan nama materi"
-          readOnly={readOnly}  // Menambahkan readOnly pada InputField
+          readOnly={readOnly}  
         />
 
         <SelectField
@@ -55,20 +55,25 @@ export default function InformasiUmum({ readOnly = true }: InformasiUmumProps) {
             { value: "Tematik", label: "Tematik" },
             { value: "Tactical", label: "Tactical" },
           ]}
-          readOnly={readOnly}  // Menambahkan readOnly pada SelectField
+          readOnly={readOnly} 
         />
 
-        <DatePickerForm
-          name="startDate"
-          label="Pilih Tanggal Mulai"
-          readOnly={readOnly}  // Menambahkan readOnly pada DatePickerForm
-        />
-        
-        <DatePickerForm
-          name="endDate"
-          label="Pilih Tanggal Berakhir"
-          readOnly={readOnly}  // Menambahkan readOnly pada DatePickerForm
-        />
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <DatePickerForm
+            name="startDate"
+            label="Pilih Tanggal Mulai"
+            readOnly={readOnly} 
+          />
+          
+          <DatePickerForm
+            name="endDate"
+            label="Pilih Tanggal Berakhir"
+            readOnly={readOnly}  
+          />
+
+        </div>
+
+
       </CardContent>
     </Card>
   );

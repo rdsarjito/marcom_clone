@@ -2,6 +2,7 @@
 
 import { type LucideIcon } from "lucide-react"
 import { useState } from "react" 
+import { useRouter } from "next/navigation";
 
 import {
   Collapsible,
@@ -28,10 +29,12 @@ export default function SidebarNavigation({
     }[]
   }[]
 }) {
-  const [activeItem, setActiveItem] = useState<string | null>(null) 
+  const [activeItem, setActiveItem] = useState<string | null>(null);
+  const router = useRouter();
 
-  const handleItemClick = (title: string) => {
+  const handleItemClick = (title: string, url: string) => {
     setActiveItem(title) 
+    router.push(url);
   }
 
   return (
@@ -49,7 +52,7 @@ export default function SidebarNavigation({
                 <SidebarMenuButton
                   tooltip={item.title}
                   className={activeItem === item.title ? 'bg-gray-100' : ''}  
-                  onClick={() => handleItemClick(item.title)} 
+                  onClick={() => handleItemClick(item.title, item.url)} 
                 >
                   {item.icon && <item.icon />}
                   <span>{item.title}</span>

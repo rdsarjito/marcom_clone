@@ -1,12 +1,15 @@
 "use client";
 
 import { useEffect } from "react";
-import { useParams } from "next/navigation";
-import FormMateri from "../component/FormMateri";
+import { useParams, useSearchParams } from "next/navigation";
+import FormMateri from "../components/FormMateri";
 import useMateriStore from "@/store/useMateriStore";
 
 export default function DetailMateriPage() {
   const { id } = useParams();
+  const searchParams = useSearchParams();
+  const mode = searchParams.get("mode") ?? undefined;
+
   const { data, setSelectedMateri } = useMateriStore();
 
   useEffect(() => {
@@ -16,5 +19,5 @@ export default function DetailMateriPage() {
     }
   }, [id, data, setSelectedMateri]);
 
-  return <FormMateri />;
+  return <FormMateri mode={mode} />;
 }

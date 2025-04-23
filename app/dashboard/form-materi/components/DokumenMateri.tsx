@@ -4,12 +4,11 @@ import SelectField from "../../uiRama/selectField";
 import InputField from "../../uiRama/inputField";
 import UploadThumbnail from "./UploadThumbnail";
 import { KeywordsInput } from "./KeywordsInput";
-import HorizontalLine from "../../uiRama/horizontalLine";
 import ButtonWithIcon from "../../uiRama/buttonWithIcon";
 import { Plus, Trash2 } from "lucide-react";
 
 interface DokumenMateriProps {
-  readOnly?: boolean;  // Menambahkan readOnly sebagai prop
+  readOnly?: boolean;  
 }
 
 export default function DokumenMateri({ readOnly = true }: DokumenMateriProps) {
@@ -28,7 +27,6 @@ export default function DokumenMateri({ readOnly = true }: DokumenMateriProps) {
     });
   };
 
-  console.log(readOnly)
 
   return (
     <div className="space-y-6">
@@ -37,13 +35,12 @@ export default function DokumenMateri({ readOnly = true }: DokumenMateriProps) {
           <CardContent className="p-6 space-y-4 relative">
             <h3 className="text-lg font-semibold">Dokumen Materi {index + 1}</h3>
 
-            {/* Passing readOnly to each input component */}
             <InputField
               name={`dokumenMateri.${index}.linkDokumen`}
               label="Input Link Dokumen Materi"
               placeholder="Masukkan link dokumen"
               type="url"
-              readOnly={readOnly}  // Read-only untuk input link
+              readOnly={readOnly}  
             />
 
             <SelectField
@@ -54,20 +51,19 @@ export default function DokumenMateri({ readOnly = true }: DokumenMateriProps) {
                 { value: "TVC", label: "TVC" },
                 { value: "Video", label: "Video" },
               ]}
-              readOnly={readOnly}  // Read-only untuk dropdown
+              readOnly={readOnly} 
             />
 
             <UploadThumbnail 
               name={`dokumenMateri.${index}.thumbnail`} 
-              readOnly={readOnly}  // Read-only untuk thumbnail upload
+              readOnly={readOnly} 
             />
 
             <KeywordsInput 
               baseName={`dokumenMateri.${index}.keywords`} 
-              readOnly={readOnly}  // Read-only untuk input keywords
+              readOnly={readOnly} 
             />
 
-            {/* Hanya menampilkan tombol hapus jika bukan dalam mode read-only */}
             {!readOnly && (
               <button
                 type="button"
@@ -82,7 +78,6 @@ export default function DokumenMateri({ readOnly = true }: DokumenMateriProps) {
         </Card>
       ))}
 
-      {/* Hanya menampilkan tombol tambah dokumen jika bukan dalam mode read-only */}
       {!readOnly && (
         <ButtonWithIcon
           icon={Plus}

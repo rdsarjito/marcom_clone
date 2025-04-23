@@ -14,6 +14,12 @@ interface Materi {
   linkDokumen: string;
   tipeMateri: string;
   keywords: string[];
+  dokumenMateri: {
+    linkDokumen: string;
+    thumbnail: string;
+    keywords: string[];
+    tipeMateri: string;
+  }[];
 }
 
 interface MateriStore {

@@ -30,7 +30,7 @@ const data = {
   navMain: [
     {
       title: "Manajemen Fitur",
-      url: "#",
+      url: "/dashboard",
       icon: Home,
     },
     {
@@ -44,10 +44,9 @@ const data = {
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
     <Sidebar collapsible="icon" {...props}>
-      <SidebarHeader className="bg-gray-50 flex h-16 gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12 px-3 border-b">
+      <SidebarHeader className="bg-gray-50 flex h-16 px-3 border-b transition-all duration-300">        
         <SidebarMenuButton
           size="lg"
-          className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
           onClick={CustomTrigger()}
         >
           <div className="flex aspect-square size-6 items-center justify-center">
