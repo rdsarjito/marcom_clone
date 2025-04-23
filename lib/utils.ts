@@ -12,22 +12,24 @@ export const getImageUrl = (path?: string) => {
   return `http://localhost:5000/${path}`;
 };
 
-export function convertFormData(data: Record<string, any>): FormData {
+export function convertToFormData(data: any): FormData {
   const formData = new FormData();
 
-  Object.entries(data).forEach(([key, value]) => {
-    if (
-      value === null ||
-      value === undefined ||
-      value === "" ||
-      (Array.isArray(value) && value.length === 0)
-    ) return;
-
-    if (Array.isArray(value)) {
-      value.forEach((val, idx) => formData.append(`${key}[${idx}]`, val));
-    } else {
-      formData.append(key, value);
+  for (const key of ['brand', 'cluster', 'fitur', 'namaMateri', 'jenis', 'startDate', 'endDate', 'periode']) {
+    if (data[key] !== undefined) {
+      formData.append(key, data[key]);
     }
+  }
+
+  data.dokumenMateri.forEach((doc: any, index: number) => {
+    formData.append(`dokumenMateri[${index}].linkDokumen`, doc.linkDokumen);
+    formData.append(`dokumenMateri[${index}].tipeMateri`, doc.tipeMateri);
+
+    doc.keywords.forEach((keyword: string, kIndex: number) => {
+      formData.append(`dokumenMateri[${index}].keywords[${kIndex}]`, keyword);
+    });
+
+    formData.append(`dokumenMateri[${index}].thumbnail`, doc.thumbnail); // file
   });
 
   return formData;

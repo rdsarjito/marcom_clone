@@ -9,7 +9,7 @@ import { useMateriStore } from "@/store/useMateriStore";
 
 import { useToast } from "@/hooks/use-toast";
 import { formSchema, FormDataType } from "@/lib/validation";
-import { convertFormData } from "@/lib/utils"; // Impor fungsi convertFormData
+import { convertToFormData } from "@/lib/utils"; // Impor fungsi convertFormData
 import { CheckCircle } from "lucide-react";
 
 export function useDocumentForm(defaultValues?: Partial<FormDataType>) {
@@ -56,7 +56,7 @@ export function useDocumentForm(defaultValues?: Partial<FormDataType>) {
 
 
       console.log(dataWithPeriode);
-      const formData = convertFormData(dataWithPeriode);
+      const formData = convertToFormData(dataWithPeriode);
 
       const isEditMode = !!selectedMateri;
       const url = isEditMode
