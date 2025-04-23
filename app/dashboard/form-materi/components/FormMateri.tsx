@@ -6,7 +6,7 @@ import { useDocumentForm } from "../../../../hooks/useDocumentForm";
 import InformasiUmum from "./InformasiUmum";
 import DokumenMateri from "./DokumenMateri";
 import FormFooter from "./FormFooter";
-import useMateriStore from "@/store/useMateriStore";
+import { useMateriStore } from "@/store/useMateriStore";
 
 import { useRouter } from "next/navigation";
 

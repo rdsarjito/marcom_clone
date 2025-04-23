@@ -1,9 +1,10 @@
 import React from "react";
 import { PresetDate } from "../constants/preset-date";
-import useFilterStore from "@/store/useFilterStore";
+import { useFilterStore } from "@/store/useFilterStore";
 import { DateRange } from "react-day-picker";
 
 const useDateRange = () => {
+
   const { tempFilters, setTempFilter, applyFilters } = useFilterStore();
   const today = React.useMemo(() => new Date(), []);
 

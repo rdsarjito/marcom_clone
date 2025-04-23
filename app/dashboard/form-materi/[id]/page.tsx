@@ -3,7 +3,7 @@
 import { useEffect } from "react";
 import { useParams, useSearchParams } from "next/navigation";
 import FormMateri from "../components/FormMateri";
-import useMateriStore from "@/store/useMateriStore";
+import { useMateriStore } from "@/store/useMateriStore";
 
 export default function DetailMateriPage() {
   const { id } = useParams();

@@ -1,6 +1,6 @@
 import { useMemo } from "react";
-import useMateriStore from "../store/useMateriStore";
-import useFilterStore from "../store/useFilterStore";
+import { useMateriStore } from "../store/useMateriStore";
+import { useFilterStore } from "../store/useFilterStore";
 
 export default function useFilteredMateri() {
   const { data } = useMateriStore();

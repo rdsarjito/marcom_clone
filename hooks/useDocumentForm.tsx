@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import useMateriStore from "@/store/useMateriStore";
+import { useMateriStore } from "@/store/useMateriStore";
 
 import { useToast } from "@/hooks/use-toast";
 import { formSchema, FormDataType } from "@/lib/validation";
@@ -73,10 +73,10 @@ export function useDocumentForm(defaultValues?: Partial<FormDataType>) {
 
       const result = await response.json();
 
-      useMateriStore.getState().setHighlightedId(result._id);
+      useMateriStore.getState().viewMateri(result._id);
 
       setTimeout(() => {
-        useMateriStore.getState().setHighlightedId(null);
+        useMateriStore.getState().viewMateri("");
       }, 5000);
 
       await fetchData();

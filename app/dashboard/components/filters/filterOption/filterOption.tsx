@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import useFilterStore from "@/store/useFilterStore";
+import { useFilterStore } from "@/store/useFilterStore";
 import useSelectedFilters from "@/hooks/useSelectedFilters";
 import HorizontalLine from "../../../uiRama/horizontalLine";
 import FilterGroup from "./FilterGroup";

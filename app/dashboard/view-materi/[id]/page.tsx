@@ -1,7 +1,7 @@
 "use client";
 
 import { useParams } from "next/navigation";
-import useMateriStore from "@/store/useMateriStore";
+import { useMateriStore } from "@/store/useMateriStore";
 import Image from "next/image";
 import { getImageUrl } from "@/lib/utils";
 import { Card, CardContent } from "@/components/ui/card";

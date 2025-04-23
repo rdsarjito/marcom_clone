@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import useMateriStore from "../../../../store/useMateriStore";
+import { useMateriStore } from "../../../../store/useMateriStore";
 import useFilteredMateri from "../../../../hooks/useFilteredMateri";
 import { paginate } from "../../../../lib/paginate";
 import ListTable from "./ListTable";

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import useFilterStore from "@/store/useFilterStore";
+import { useFilterStore } from "@/store/useFilterStore";
 import { FilterKey } from "@/constants/filter-options";
 
 export default function useSelectedFilters() {
