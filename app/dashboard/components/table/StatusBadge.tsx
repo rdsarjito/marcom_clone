@@ -12,7 +12,7 @@ interface StatusBadgeProps {
   
     return (
       <span className={`font-semibold ${isActive ? "text-green-500" : "text-red-500"}`}>
-        {isActive ? "Aktif" : "Tidak Aktif"}
+        {isActive ? "Aktif" : "Expired"}
       </span>
     );
   };

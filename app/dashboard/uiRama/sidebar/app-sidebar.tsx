@@ -1,7 +1,6 @@
 "use client"
 
 import * as React from "react"
-
 import {
   Users,
   GalleryVerticalEnd,
@@ -10,6 +9,7 @@ import {
 } from "lucide-react"
 
 import SidebarNavigation from "@/app/dashboard/uiRama/sidebar/sidebar-navigation"
+import { useIsMobile } from "@/hooks/use-mobile"
 
 import {
   Sidebar,
@@ -22,7 +22,6 @@ import {
 
 export function CustomTrigger() {
   const { toggleSidebar } = useSidebar()
-  
   return () => toggleSidebar()
 }
 
@@ -42,9 +41,12 @@ const data = {
 }
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  const isMobile = useIsMobile()
+  const { toggleSidebar } = useSidebar()
+
   return (
     <Sidebar collapsible="icon" {...props}>
-      <SidebarHeader className="bg-gray-50 flex h-16 px-3 border-b transition-all duration-300">        
+      <SidebarHeader className="bg-gray-50 flex h-16 px-3 py-4 border-b transition-all duration-300">
         <SidebarMenuButton
           size="lg"
           onClick={CustomTrigger()}
@@ -62,9 +64,16 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           </div>
         </SidebarMenuButton>
       </SidebarHeader>
+
       <SidebarContent>
-        <SidebarNavigation items={data.navMain} />
+        <SidebarNavigation
+          items={data.navMain}
+          onNavigate={() => {
+            if (isMobile) toggleSidebar()
+          }}
+        />
       </SidebarContent>
+      
       <SidebarRail />
     </Sidebar>
   )

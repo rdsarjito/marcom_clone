@@ -11,7 +11,7 @@ const StatsSection = () => {
   } = useStatsData();
 
   return (
-    <section className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-4 px-4 py-6">
+    <section className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-4 px-4">
       <StatsCard
         title="Jumlah Fitur"
         value={fitur.now.toString()}

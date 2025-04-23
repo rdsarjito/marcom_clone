@@ -1,8 +1,8 @@
 "use client"
 
 import { type LucideIcon } from "lucide-react"
-import { useState } from "react" 
-import { useRouter } from "next/navigation";
+import { useState } from "react"
+import { useRouter } from "next/navigation"
 
 import {
   Collapsible,
@@ -17,6 +17,7 @@ import {
 
 export default function SidebarNavigation({
   items,
+  onNavigate,
 }: {
   items: {
     title: string
@@ -27,14 +28,16 @@ export default function SidebarNavigation({
       title: string
       url: string
     }[]
-  }[]
+  }[],
+  onNavigate?: () => void
 }) {
-  const [activeItem, setActiveItem] = useState<string | null>(null);
-  const router = useRouter();
+  const [activeItem, setActiveItem] = useState<string | null>(null)
+  const router = useRouter()
 
   const handleItemClick = (title: string, url: string) => {
-    setActiveItem(title) 
-    router.push(url);
+    setActiveItem(title)
+    router.push(url)
+    onNavigate?.()
   }
 
   return (
@@ -51,8 +54,8 @@ export default function SidebarNavigation({
               <CollapsibleTrigger asChild>
                 <SidebarMenuButton
                   tooltip={item.title}
-                  className={activeItem === item.title ? 'bg-gray-100' : ''}  
-                  onClick={() => handleItemClick(item.title, item.url)} 
+                  className={activeItem === item.title ? 'bg-gray-100' : ''}
+                  onClick={() => handleItemClick(item.title, item.url)}
                 >
                   {item.icon && <item.icon />}
                   <span>{item.title}</span>

@@ -10,7 +10,7 @@ interface ReusableTableProps {
 
 const ListTable: React.FC<ReusableTableProps> = ({ title, data }) => {
   return (
-    <div>
+    <div className="overflow-x-auto">
       <h2 className="text-2xl font-bold mb-6">{title}</h2>
       <Table>
         <TableHeader>

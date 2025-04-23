@@ -25,7 +25,7 @@ export default function InformasiUmum({ readOnly = true }: InformasiUmumProps) {
           label="Cluster"
           options={[
             { value: "Bayar-Bayar Harian", label: "Bayar-Bayar Harian" },
-            { value: "Bayar-bayar Bulanan", label: "Bayar-bayar Bulanan" },
+            { value: "Bayar-Bayar Bulanan", label: "Bayar-Bayar Bulanan" },
           ]}
           readOnly={readOnly} 
         />

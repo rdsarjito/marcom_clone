@@ -12,7 +12,7 @@ const FilterDate: React.FC = () => {
   const { dateRange, isCustomRange, handleDateChange, handlePresetSelection } = useDateRange();
 
   return (
-    <div className="flex items-center space-x-2">
+    <section className="flex items-center space-x-2 py-4 pl-4">
       <span className="text-sm text-gray-700">Lihat data selama</span>
       <DateDropdown dateRange={dateRange} isCustomRange={isCustomRange} handlePresetSelection={handlePresetSelection} />
 
@@ -36,7 +36,7 @@ const FilterDate: React.FC = () => {
           </PopoverContent>
         </Popover>
       )}
-    </div>
+    </section>
   );
 };
 
