@@ -2,34 +2,31 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
-import multer from 'multer'; // Import multer
+import multer from 'multer';
 import materiRoutes from './routes/materiRoutes.js';
 
 dotenv.config();
 
 const app = express();
 
-// Konfigurasi penyimpanan Multer
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, 'uploads/'); // Pastikan folder uploads ada di root proyek
+    cb(null, 'uploads/');
   },
   filename: (req, file, cb) => {
-    cb(null, `${Date.now()}_${file.originalname}`); // Menamai file dengan timestamp
+    cb(null, `${Date.now()}_${file.originalname}`);
   },
 });
 
-// Setup multer dengan penyimpanan yang sudah diatur
 const upload = multer({ storage });
 
-// Middleware
 app.use(cors());
 app.use(express.json());
+app.use('/uploads', express.static('uploads'));
 
-// Gunakan middleware upload.single('thumbnail') untuk upload file di materiRoutes
-app.use('/api/materi', upload.single('thumbnail'), materiRoutes);
+// Gunakan .any() agar bisa upload banyak file dengan nama dinamis
+app.use('/api/materi', upload.any(), materiRoutes);
 
-// Connect to MongoDB
 mongoose
   .connect(process.env.MONGO_URI, { dbName: 'bri' })
   .then(() => console.log('MongoDB Connected'))

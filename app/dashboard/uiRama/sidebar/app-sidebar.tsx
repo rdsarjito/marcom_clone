@@ -1,7 +1,6 @@
 "use client"
 
 import * as React from "react"
-
 import {
   Users,
   GalleryVerticalEnd,
@@ -10,6 +9,7 @@ import {
 } from "lucide-react"
 
 import SidebarNavigation from "@/app/dashboard/uiRama/sidebar/sidebar-navigation"
+import { useIsMobile } from "@/hooks/use-mobile"
 
 import {
   Sidebar,
@@ -22,7 +22,6 @@ import {
 
 export function CustomTrigger() {
   const { toggleSidebar } = useSidebar()
-  
   return () => toggleSidebar()
 }
 
@@ -30,7 +29,7 @@ const data = {
   navMain: [
     {
       title: "Manajemen Fitur",
-      url: "#",
+      url: "/dashboard",
       icon: Home,
     },
     {
@@ -42,12 +41,14 @@ const data = {
 }
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  const isMobile = useIsMobile()
+  const { toggleSidebar } = useSidebar()
+
   return (
     <Sidebar collapsible="icon" {...props}>
-      <SidebarHeader className="bg-gray-50 flex h-16 gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12 px-3 border-b">
+      <SidebarHeader className="bg-gray-50 flex h-16 px-3 py-4 border-b transition-all duration-300">
         <SidebarMenuButton
           size="lg"
-          className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
           onClick={CustomTrigger()}
         >
           <div className="flex aspect-square size-6 items-center justify-center">
@@ -63,9 +64,16 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           </div>
         </SidebarMenuButton>
       </SidebarHeader>
+
       <SidebarContent>
-        <SidebarNavigation items={data.navMain} />
+        <SidebarNavigation
+          items={data.navMain}
+          onNavigate={() => {
+            if (isMobile) toggleSidebar()
+          }}
+        />
       </SidebarContent>
+      
       <SidebarRail />
     </Sidebar>
   )
