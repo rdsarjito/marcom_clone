@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 import mongoose from 'mongoose';
 import multer from 'multer';
 import materiRoutes from './routes/materiRoutes.js';
+import cors from 'cors';
 
 dotenv.config();
 
@@ -26,6 +27,8 @@ app.use('/uploads', express.static('uploads'));
 
 // Gunakan .any() agar bisa upload banyak file dengan nama dinamis
 app.use('/api/materi', upload.any(), materiRoutes);
+
+app.use(cors());
 
 mongoose
   .connect(process.env.MONGO_URI, { dbName: 'bri' })
