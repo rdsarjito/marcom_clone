@@ -25,7 +25,6 @@ app.use(cors());
 app.use(express.json());
 app.use('/uploads', express.static('uploads'));
 
-// Gunakan .any() agar bisa upload banyak file dengan nama dinamis
 app.use('/api/materi', upload.any(), materiRoutes);
 
 app.use(cors());
